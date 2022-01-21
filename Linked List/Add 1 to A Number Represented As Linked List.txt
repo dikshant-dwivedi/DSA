@@ -1,0 +1,85 @@
+C++ Solution
+
+class Solution
+{
+    public:
+    
+    Node* reverse(Node *head){
+        Node *prev = NULL, *next = NULL, *curr = head;
+        while(curr){
+            next = curr -> next;
+            curr -> next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+    
+    void addOneUtil(Node *head){
+        
+        int carry = 1, sum;
+        Node *prev = NULL, *curr = head;
+        while(curr){
+            sum = curr -> data + carry;
+            carry = (sum >= 10) ? 1 : 0;
+            sum = sum % 10;
+            curr -> data = sum;
+            prev = curr;
+            curr = curr -> next;
+        }
+        if(carry > 0){
+            prev -> next = new Node(carry);
+        }
+    }
+    
+    Node* addOne(Node *head) 
+    {
+        head = reverse(head);
+        addOneUtil(head);
+        return reverse(head);
+    }
+};
+
+Java Solution
+
+class Solution
+{
+    
+    public static Node reverse(Node head){
+        
+        Node curr = head, prev = null, next = null;
+        while(curr != null){
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+    
+    public static void addOneUtil(Node head){
+        
+        int carry = 1, sum;
+        Node prev = null, curr = head;
+        while(curr != null){
+            sum = carry + curr.data;
+            carry = (sum >= 10) ? 1 : 0;
+            sum = sum % 10;
+            curr.data = sum;
+            prev = curr;
+            curr = curr.next;
+        }
+        if(carry > 0){
+            prev.next = new Node(carry);
+        }
+        
+    }
+    
+    public static Node addOne(Node head) 
+    { 
+        //code here.
+        head = reverse(head);
+        addOneUtil(head);
+        return reverse(head);
+    }
+}
