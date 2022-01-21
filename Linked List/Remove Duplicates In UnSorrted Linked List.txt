@@ -1,0 +1,55 @@
+C++ Solution practice gfg
+
+class Solution
+{
+    public:
+    //Function to remove duplicates from unsorted linked list.
+    Node * removeDuplicates( Node *head) 
+    {
+     // your code goes here
+         Node *curr = head, *prev = NULL;
+         unordered_set<int> s;
+         while(curr){
+             
+             if(s.find(curr -> data) != s.end()){
+                 prev -> next = curr -> next;
+                 delete curr;
+             }
+             else{
+                 s.insert(curr -> data);
+                 prev = curr;
+             }
+             curr = prev -> next;
+         }
+    
+        return head;
+    }
+};
+
+
+Java Solution practice gfg
+
+class Solution
+{
+    //Function to remove duplicates from unsorted linked list.
+    public Node removeDuplicates(Node head) 
+    {
+         // Your code here
+         HashSet<Integer> s = new HashSet<>();
+         Node curr = head, prev = null;
+         
+         while(curr != null){
+             
+             if(s.contains(curr.data)){
+                 prev.next = curr.next;
+             }
+             else{
+                 s.add(curr.data);
+                 prev = curr;
+             }
+             curr = curr.next;
+         }
+         
+         return head;
+    }
+}
