@@ -1,0 +1,129 @@
+C++ Solution
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    
+    int getSize(ListNode *head){
+        int size = 1;
+        ListNode *p = head;
+        while(p -> next){
+            size++;
+            p = p -> next;
+        }
+        return size;
+    }
+    
+    ListNode* reverseKGroup(ListNode* head, int k) {
+    
+        int totalSize = getSize(head), currSize = 0;
+        
+        ListNode *newHead = NULL, *last = NULL, *curr = head;
+        
+        while((totalSize - currSize) >= k){
+            
+            ListNode *prev = NULL, *first = curr, *next = NULL;
+            int count = 1;
+            
+            while(count <= k){
+                next = curr -> next;
+                curr -> next = prev;
+                prev = curr;
+                curr = next;
+                count++;
+            }
+            
+            if(!newHead){
+                newHead = prev;
+            }
+            
+            if(last){
+                last -> next = prev;
+            }
+            
+            last = first;
+            currSize += k;
+            
+        }
+        
+        if(currSize < totalSize){
+            last -> next = curr;
+        }
+        
+        return newHead;
+    }
+};
+
+Java Solution
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    
+    public int getSize(ListNode head){
+        int count = 1;
+        ListNode p = head;
+        
+        while(p.next != null){
+            p = p.next;
+            count++;
+        }
+        
+        return count;
+    }
+    
+    public ListNode reverseKGroup(ListNode head, int k) {
+        
+        int totalSize = getSize(head);
+        int currSize = 0;
+        ListNode newHead = null, curr = head, lastNode = null;
+        
+        while((totalSize - currSize) >= k){
+            
+            ListNode first = curr, prev = null, next = null;
+            int count = 1;
+            
+            while(count <= k){
+                next = curr.next;
+                curr.next = prev;
+                prev = curr;
+                curr = next;
+                count++;
+            }
+            
+            if(newHead == null){
+                newHead = prev;
+            }
+            
+            if(lastNode != null){
+                lastNode.next = prev;
+            }
+            
+            lastNode = first;
+            currSize += k;
+        }
+        
+        if(currSize < totalSize){
+            lastNode.next = curr;
+        }
+        
+        return newHead;
+    }
+}
