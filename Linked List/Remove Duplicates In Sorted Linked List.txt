@@ -1,0 +1,66 @@
+C++ Solution
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        
+        ListNode *curr = head, *temp = NULL;
+
+        while(curr){
+
+            temp = curr;
+
+            while(temp && temp -> val == curr -> val){
+                temp = temp -> next;
+            }
+
+            curr -> next = temp;
+            curr = curr -> next;
+        }
+
+        return head;
+    }
+};
+
+Java Solution
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        
+        ListNode curr = head, temp = null;
+        
+        while(curr != null){
+            
+            temp = curr;
+            
+            while(temp != null && curr.val == temp.val){
+                temp = temp.next;
+            }
+            
+            curr.next = temp;
+            curr = curr.next;
+        }
+        
+        return head;
+    }
+}
