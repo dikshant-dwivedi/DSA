@@ -1,0 +1,248 @@
+C++ Solution
+
+#include <iostream>
+#include <cstdio>
+using namespace std;
+ 
+/* a node of the singly linked list */
+struct node
+{
+    int data;
+    struct node *next;
+    
+    node(int x){
+        data = x;
+        next = NULL;
+    }
+};
+
+/* A utility function to insert a node at the beginning of linked list */
+void push(struct node** head_ref, int new_data)
+{
+    /* allocate node */
+    struct node* new_node = new node(new_data);
+ 
+    /* link the old list off the new node */
+    new_node->next = (*head_ref);
+ 
+    /* move the head to point to the new node */
+    (*head_ref)    = new_node;
+}
+ 
+/* A utility function to print linked list */
+void printList(struct node *node)
+{
+    while (node != NULL)
+    {
+        printf("%d ", node->data);
+        node = node->next;
+    }
+    printf("\n");
+}
+void quickSort(struct node **headRef);
+int main()
+{
+	int t,n,x;
+	cin>>t;
+	while(t--){
+		
+        
+        cin>>n;n=n-1;
+		cin>>x;
+        node *temp,*head = new node(x);
+        temp=head;
+        while(n--)
+        {
+			cin>>x;
+          temp->next=new node(x);
+          temp=temp->next;
+			}
+    
+    quickSort(&head);
+ 
+    printList(head);
+ while(head!= NULL){
+     temp=head;
+     head=head->next;
+     free(temp);
+     
+ }
+	}
+    return 0;
+}// } Driver Code Ends
+
+
+ 
+/* a node of the singly linked list 
+struct node
+{
+    int data;
+    struct node *next;
+    
+    node(int x){
+        data = x;
+        next = NULL;
+    }
+}; */
+
+//you have to complete this function
+//SOLUTION STARTS HERE
+node* getPartition(node *head, node *tail){
+    //element on and left of the prev are going to smaller than pivot(except first)
+    node *pivot = head, *curr = head -> next, *prev = head;
+    while(curr != tail -> next){
+        if(pivot -> data > curr -> data){
+            swap(prev -> next -> data, curr -> data);
+            prev = prev -> next;
+        }
+        curr = curr -> next;
+    }
+    swap(pivot -> data, prev -> data);
+    //ultimately prev will be position of pivot
+    return prev;
+}
+
+void solve(node *head, node *tail){
+    if(!head || !tail || head == tail)
+        return;
+        
+    node *pivot = getPartition(head, tail);
+    solve(head, pivot);
+    solve(pivot -> next, tail);
+}
+
+void quickSort(struct node **headRef) {
+    node *tail = *headRef;
+    while(tail -> next){
+        tail =  tail -> next;
+    }
+    solve(*headRef, tail);
+}
+//SOLUTION ENDS HERE
+
+
+Java Solution
+
+import java.util.*;
+import java.lang.*;
+
+class Node 
+{
+    int data;
+    Node next;
+    Node(int key)
+    {
+        data = key;
+        next = null;
+    }
+}
+
+class SortLL
+{
+    static Node head;
+    public static void main (String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        
+        while(t-- > 0) 
+        {
+            int n = sc.nextInt();
+            int a1 = sc.nextInt();
+            Node head = new Node(a1);
+            addToTheLast(head);
+            
+            for(int i = 1; i< n; i++)
+            {
+                int a = sc.nextInt();
+                addToTheLast(new Node(a));
+            }
+            
+            GfG gfg = new GfG();
+            Node node = gfg.quickSort(head);
+            
+            printList(node);
+            System.out.println();
+        }
+    }
+    public static void printList(Node head)
+    {
+        while(head != null)
+        {
+            System.out.print(head.data + " ");
+            head = head.next;
+        }
+    }
+    
+    public static void addToTheLast(Node node) 
+{
+  if (head == null) 
+  {
+    head = node;
+  } else 
+  {
+   Node temp = head;
+   while (temp.next != null)
+          temp = temp.next;
+         temp.next = node;
+  }
+}
+}// } Driver Code Ends
+
+
+/*node class of the linked list
+class Node
+{
+    int data;
+    Node next;
+    Node(int key)
+    {
+        data = key;
+        next = null;
+    }
+    
+}*/
+// you have to complete this function
+class GfG
+{
+    //SOLUTION STARTS HERE
+    public static void swap(Node a, Node b){
+        int temp = a.data;
+        a.data = b.data;
+        b.data = temp;
+    }
+    
+    public static Node getPartition(Node head, Node tail){
+        Node pivot = head, prev = head, curr = head.next;
+        while(curr != tail.next){
+            if(pivot.data > curr.data){
+                swap(prev.next, curr);
+                prev = prev.next;
+            }
+            curr = curr.next;
+        }
+        swap(pivot, prev);
+        return prev;
+    }
+    
+    public static void solve(Node head, Node tail){
+        if(head == null || tail == null || head == tail){
+            return;
+        }
+        Node pivot = getPartition(head, tail);
+        solve(head, pivot);
+        solve(pivot.next, tail);
+    }
+    
+    public static Node quickSort(Node node)
+    {
+        //Your code here
+        Node tail = node;
+        while(tail.next != null){
+            tail = tail.next;
+        }
+        
+        solve(node, tail);
+        return node;
+    }
+    /SOLUTION ENDS HERE
+}
