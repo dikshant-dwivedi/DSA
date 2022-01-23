@@ -1,0 +1,262 @@
+C++ Solution
+
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Node {
+    int data;
+    struct Node* next;
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+
+
+ // } Driver Code Ends
+/* Structure of the linked list node is as
+struct Node 
+{
+    int data;
+    struct Node* next;
+    Node(int x) { data = x;  next = NULL; }
+};
+*/
+
+
+class Solution{
+  public:
+  
+    //SOLUTION STARTS HERE
+
+    Node* getMiddle(Node *head){
+        if(!head || !(head -> next)){
+            return head;
+        }
+        Node *slow = head, *fast = head;
+        while(slow -> next && fast -> next && fast -> next -> next){
+            slow = slow -> next;
+            fast = fast -> next -> next;
+        }
+        return slow;
+    }
+  
+    Node *mergeSorted(Node* left, Node* right){
+        Node *result = NULL;
+        
+        if(!left){
+            return right;
+        }
+        if(!right){
+            return left;
+        }
+        
+        if(left -> data < right -> data){
+            result = left;
+            result -> next = mergeSorted(left -> next, right);
+        }
+        else{
+            result = right;
+            result -> next = mergeSorted(left, right -> next);
+        }
+        
+        return result;
+    }
+  
+    //Function to sort the given linked list using Merge Sort.
+    Node* mergeSort(Node* head) {
+        // your code here
+        if(!head || !(head -> next)){
+            return head;
+        }
+        
+        Node *middle = getMiddle(head);
+        Node *nextOfMiddle = middle -> next;
+        
+        middle -> next = NULL;
+        
+        Node *left = mergeSort(head);
+        Node *right = mergeSort(nextOfMiddle);
+        
+        Node *sorted = mergeSorted(left, right);
+        return sorted;
+    }
+
+    //SOLUTION ENDS HERE
+};
+
+
+// { Driver Code Starts.
+
+void printList(Node* node) {
+    while (node != NULL) {
+        printf("%d ", node->data);
+        node = node->next;
+    }
+    printf("\n");
+}
+
+void push(struct Node** head_ref, int new_data) {
+    Node* new_node = new Node(new_data);
+
+    new_node->next = (*head_ref);
+    (*head_ref) = new_node;
+}
+
+int main() {
+    long test;
+    cin >> test;
+    while (test--) {
+        struct Node* a = NULL;
+        long n, tmp;
+        cin >> n;
+        for (int i = 0; i < n; i++) {
+            cin >> tmp;
+            push(&a, tmp);
+        }
+        Solution obj;
+        a = obj.mergeSort(a);
+        printList(a);
+    }
+    return 0;
+}  // } Driver Code Ends
+
+Java Solution
+
+
+//Initial Template for Java
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Node
+{
+    int data;
+    Node next;
+    Node(int key)
+    {
+        data = key;
+        next = null;
+    }
+}
+
+class Driverclass
+{
+    
+    public static void main (String[] args) 
+    {
+        Scanner sc= new Scanner(System.in);
+        int t = sc.nextInt();
+        
+        while(t-- > 0)
+        {
+            int n = sc.nextInt();
+            Node head = new Node(sc.nextInt());
+            Node tail = head;
+            while(n-- > 1){
+		        tail.next = new Node(sc.nextInt());
+		        tail = tail.next;
+		    }
+		   
+		      head = new Solution().mergeSort(head);
+		     printList(head);
+		    System.out.println();
+        }
+    }
+    public static void printList(Node head)
+    {
+        if(head == null)
+           return;
+           
+        Node temp = head;
+        while(temp != null)
+        {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+    }
+}
+
+
+// } Driver Code Ends
+
+
+//User function Template for Java
+/*
+class Node
+{
+    int data;
+    Node next;
+    Node(int key)
+    {
+        this.data = key;
+        next = null;
+    }
+} */
+
+class Solution
+{ 
+    // SOLUTION STARTS HERE
+    
+    static Node getMiddle(Node head){
+        if(head == null || head.next == null){
+            return head;
+        }
+        Node slow = head, fast = head;
+        while(slow.next != null && fast.next != null &&fast.next.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+    
+    static Node mergeSorted(Node left, Node right){
+        
+        Node result = null;
+        
+        if(left == null){
+            return right;
+        }
+        if(right == null){
+            return left;
+        }
+        
+        if(left.data < right.data){
+            result = left;
+            result.next = mergeSorted(left.next, right);
+        }
+        else{
+            result = right;
+            result.next = mergeSorted(left, right.next);
+        }
+        
+        return result;
+    }
+    //Function to sort the given linked list using Merge Sort.
+    static Node mergeSort(Node head)
+    {
+        // add your code here
+        if(head == null || head.next == null){
+            return head;
+        }
+        
+        Node middle = getMiddle(head);
+        Node nextOfMiddle = middle.next;
+        
+        middle.next = null;
+        
+        Node left = mergeSort(head);
+        Node right = mergeSort(nextOfMiddle);
+        
+        Node sorted = mergeSorted(left, right);
+        
+        return sorted;
+    }
+     
+    //SOLUTION ENDS HERE
+}
+
