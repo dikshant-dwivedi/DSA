@@ -1,0 +1,188 @@
+C++ Solution
+
+// C program to find n'th Node in linked list
+#include <stdio.h>
+#include <stdlib.h>
+#include<iostream>
+using namespace std;
+
+/* Link list Node */
+struct Node
+{
+    int data;
+    struct Node* next;
+    
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+    
+};
+
+
+/* Function to get the middle of the linked list*/
+bool isCircular(struct Node *head);
+
+/* Driver program to test above function*/
+int main()
+{
+  int T,i,n,l,k;
+
+    cin>>T;
+
+    while(T--){
+
+        cin>>n>>k;
+	    Node *head=NULL, *tail = NULL;
+	    int x;
+	    cin >> x;
+	    head = new Node(x);
+	    tail = head;
+	    for(int i=0;i<n-1;i++)
+	    {
+	        cin>>x;
+	        tail -> next = new Node(x);
+	        tail = tail -> next;
+	    }
+        if (k==1 && n >= 1)
+              tail->next = head;
+
+
+    printf("%d\n", isCircular(head));
+    }
+    return 0;
+}
+
+// } Driver Code Ends
+
+
+/* Link list Node 
+struct Node
+{
+    int data;
+    struct Node* next;
+    
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+    
+}; 
+*/
+
+/* Should return true if linked list is circular, else false */
+//SOLUTION STARTS HERE
+bool isCircular(Node *head)
+{
+   // Your code here
+   if(!head) return true;
+    
+    Node *curr = head -> next;
+    
+    while(curr && curr != head){
+        curr = curr -> next;
+    }
+    
+    return head == curr;
+}
+//SOLUTION ENDS HERE
+
+
+Java Solution
+
+
+import java.util.*;
+
+class Node
+{
+	int data;
+	Node next;
+	Node(int d)
+	{
+		data = d;
+		next = null;
+	}
+}
+
+class Is_LinklIst_Circular
+{
+	Node head;
+	
+	
+	public static void main(String args[])
+	{
+	    Scanner sc = new Scanner(System.in);
+		int t = sc.nextInt();
+		
+		while(t>0)
+		{
+			int n = sc.nextInt();
+			int l = sc.nextInt();
+			
+			sc.nextLine().trim().split(" ");
+			String str[]= sc.nextLine().trim().split(" ");
+            Node head = null, tail = null;
+            head = new Node(Integer.parseInt(str[0]));
+            tail = head;
+            for(int i = 1; i < n ; i++)
+            {
+                tail.next = new Node(Integer.parseInt( str[i]));
+                tail = tail.next;
+            }
+                
+			
+			if(l==1 && n>=1)
+			{
+				Node temp = head;
+				while(temp.next != null)
+				{
+					temp = temp.next; 
+				}
+				temp.next = head;
+			}
+			
+			GfG g = new GfG();
+			boolean b = g.isCircular(head);
+			if(b==true)
+			System.out.println(1);
+			else 
+			System.out.println(0);
+		t--;
+		}
+	}
+}
+
+// } Driver Code Ends
+
+
+/* Structure of LinkedList
+class Node
+{
+	int data;
+	Node next;
+	Node(int d)
+	{
+		data = d;
+		next = null;
+	}
+}
+*/
+class GfG
+{
+    //SOLUTION STARTS HERE
+    boolean isCircular(Node head)
+    {
+	// Your code here	
+	    if(head == null) return true;
+	    
+	    Node curr = head.next;
+	    
+	    while(curr != null && curr != head){
+	        curr = curr.next;
+	    }
+	    
+	    return curr == head;
+    }
+    //SOLUTION ENDS HERE
+}
+
