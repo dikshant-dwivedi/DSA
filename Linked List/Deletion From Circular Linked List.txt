@@ -1,0 +1,88 @@
+C++ Solution
+
+#include <iostream>
+
+using namespace std;
+
+struct Node{
+    int data;
+    Node *next;
+};
+
+Node *head = NULL;
+
+void addNode(int x){
+    Node *newNode = new Node();
+    newNode -> data = x;
+    if(!head){
+        head = newNode;
+        newNode -> next = newNode;
+    }
+    else{
+        Node *p = head;
+        while(p -> next != head){
+            p = p -> next;
+        }
+        p -> next = newNode;
+        newNode -> next = head;
+    }
+}
+
+void printList(){
+    Node *p = head;
+    do{
+        cout << p -> data << " ";
+        p = p -> next;
+    }
+    while(p != head);
+    cout << endl;
+}
+
+void deleteNode(int x){
+    if(!head) return;
+    if(x == 1){
+        Node *p = head;
+        while(p -> next != head){
+            p = p -> next;
+        }
+        p -> next = head -> next;
+        p = head;
+        head = head -> next;
+        delete p;
+    }
+    else{
+        Node *p = head;
+        int i = 1;
+        while(i < x && p -> next -> next != head){
+            p = p -> next;
+            i++;
+        }
+        Node *nodeToBeDeleted = p -> next;
+        p -> next = nodeToBeDeleted -> next;
+        delete nodeToBeDeleted;
+    }
+}
+
+int main()
+{
+    addNode(1);
+    addNode(2);
+    addNode(3);
+    addNode(4);
+    addNode(5);
+    addNode(6);
+    addNode(7);
+    addNode(8);
+    printList();
+    
+    deleteNode(1);
+    printList();
+    
+    deleteNode(4);
+    printList();
+    
+    deleteNode(10);
+    printList();
+
+    return 0;
+}
