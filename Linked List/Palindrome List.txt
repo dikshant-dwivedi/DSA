@@ -1,0 +1,223 @@
+C++ Solution
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+#include <stack>
+using namespace std;
+/* Link list Node */
+struct Node {
+  int data;
+  struct Node *next;
+  Node(int x) {
+    data = x;
+    next = NULL;
+  }
+};
+
+
+
+
+ // } Driver Code Ends
+/*
+struct Node {
+  int data;
+  struct Node *next;
+  Node(int x) {
+    data = x;
+    next = NULL;
+  }
+};
+*/
+
+class Solution{
+  public:
+    //Function to check whether the list is palindrome.
+    bool palindromeUtil(Node **left, Node *right){
+        
+        if(!right) return true;
+        
+        bool isP = palindromeUtil(left, right -> next);
+        if(!isP) return false;
+        
+        isP = ((*left) -> data == right -> data);
+        
+        *left = (*left) -> next;
+        
+        return isP;
+    }
+    
+    bool isPalindrome(Node *head)
+    {
+        //Your code here
+        return palindromeUtil(&head, head);
+    }
+};
+
+
+
+// { Driver Code Starts.
+/* Driver program to test above function*/
+int main()
+{
+  int T,i,n,l,firstdata;
+    cin>>T;
+    while(T--)
+    {
+        
+        struct Node *head = NULL,  *tail = NULL;
+        cin>>n;
+        // taking first data of LL
+        cin>>firstdata;
+        head = new Node(firstdata);
+        tail = head;
+        // taking remaining data of LL
+        for(i=1;i<n;i++)
+        {
+            cin>>l;
+            tail->next = new Node(l);
+            tail = tail->next;
+        }
+    Solution obj;
+   	cout<<obj.isPalindrome(head)<<endl;
+    }
+    return 0;
+}
+
+  // } Driver Code Ends
+
+
+Java Solution
+
+import java.util.*;
+
+class Node
+{
+	int data;
+	Node next;
+	
+	Node(int d)
+	{
+		data = d;
+		next = null;
+	}
+}
+
+class Is_LinkedList_Palindrom
+{
+	 Node head;  
+	 Node tail;
+	
+	/* Function to print linked list */
+    void printList(Node head)
+    {
+        Node temp = head;
+        while (temp != null)
+        {
+           System.out.print(temp.data+" ");
+           temp = temp.next;
+        }  
+        System.out.println();
+    }
+	
+ 
+    /* Inserts a new Node at front of the list. */
+    public void addToTheLast(Node node) 
+	{
+
+		if (head == null) 
+		{
+			head = node;
+			tail = node;
+		} else 
+		{
+		    tail.next = node;
+		    tail = node;
+		}
+    }
+	
+	public static void main(String args[])
+	{
+		Scanner sc = new Scanner(System.in);
+		int t = sc.nextInt();
+		 
+		while(t>0)
+        {
+			int n = sc.nextInt();
+			//int k = sc.nextInt();
+			Is_LinkedList_Palindrom llist = new Is_LinkedList_Palindrom();
+			//int n=Integer.parseInt(br.readLine());
+			int a1=sc.nextInt();
+			Node head= new Node(a1);
+            Node tail = head;
+            for (int i = 1; i < n; i++) 
+			{
+				int a = sc.nextInt(); 
+			    tail.next = new Node(a);
+			    tail = tail.next;
+			}
+			
+			Solution g = new Solution();
+			if(g.isPalindrome(head) == true)
+			    System.out.println(1);
+		    else
+			    System.out.println(0);
+			t--;
+		}
+		
+	}
+}
+
+
+
+// } Driver Code Ends
+
+
+/* Structure of class Node is
+class Node
+{
+	int data;
+	Node next;
+	
+	Node(int d)
+	{
+		data = d;
+		next = null;
+	}
+}*/
+
+class Solution
+{
+    //Function to check whether the list is palindrome.
+    Node reverseList(Node head){
+        Node prev = head, next = null, curr = head.next;
+        while(curr != null){
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+    
+    boolean isPalindrome(Node head) 
+    {
+        Node slow = head, fast = head;
+        while(fast.next != null && fast.next.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        fast = reverseList(slow);
+        
+        Node p = head;
+        while(fast != slow){
+            if(p.data != fast.data) return false;
+            p = p.next;
+            fast = fast.next;
+        }
+        
+        return true;
+    }    
+}
+
