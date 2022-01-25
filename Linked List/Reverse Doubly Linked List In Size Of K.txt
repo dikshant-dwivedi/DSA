@@ -1,0 +1,102 @@
+C++ Solution
+
+/*********************************************************
+
+    Following is the class structure of the Node class:
+
+    class Node
+	{
+	public:
+	    int data;
+	    Node *next;
+	    Node *prev;
+	    Node(int data)
+	    {
+	        this->data = data;
+	        this->next = NULL;
+	        this->prev = NULL;
+	    }
+	};
+
+************************************************************/
+
+Node* reverseDLLInGroups(Node* head, int k)
+{	
+    // Write your code here. 
+    Node *previous = NULL, *curr = head;
+    int i = 0;
+    
+    while(curr && i < k){
+        previous = curr -> prev;
+        curr -> prev = curr -> next;
+        curr -> next = previous;
+        curr = curr -> prev;
+        i++;
+    }
+    
+    if(curr){
+        curr -> prev = NULL;
+       	head -> next = reverseDLLInGroups(curr, k);
+        if(head -> next){
+        	head -> next -> prev = head;
+        }
+    }
+    
+    if(previous){
+        head = previous -> prev;
+        head -> prev = NULL;
+    }
+    return head;
+}
+
+
+Java Solution
+
+/*********************************************************
+
+    Following is the Binary Tree node structure:
+
+    class Node {
+        public int data;
+        public Node next;
+        public Node prev;
+
+        Node(int data) {
+            this.data = data;
+            this.next = null;
+            this.prev = null;
+        }
+    }
+    
+************************************************************/
+
+public class Solution {
+    public static Node reverseDLLInGroups(Node head, int k) {
+        // Write your code here.
+        Node previous = null, curr = head;
+        int i = 0;
+        
+        while(i < k && curr != null){
+            previous = curr.prev;
+            curr.prev = curr.next;
+            curr.next = previous;
+            curr = curr.prev;
+            i++;
+        }
+        
+        if(curr != null){
+            curr.prev = null;
+            head.next = reverseDLLInGroups(curr, k);
+            if(head.next != null){
+                head.next.prev = head;
+            }
+        }
+        
+        if(previous != null){
+            head = previous.prev;
+            head.prev = null;
+        }
+        
+        return head;
+    }
+}
