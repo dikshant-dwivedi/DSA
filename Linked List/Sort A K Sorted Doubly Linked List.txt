@@ -1,0 +1,131 @@
+C++ Solution
+
+/****************************************************************
+
+    Following is the class structure of the Node class:
+
+        class Node
+        {
+        public:
+            int data;
+            Node *next;
+            Node *prev;
+            Node(int data)
+            {
+                this->data = data;
+                this->next = NULL;
+                this->prev = NULL;
+            }
+        };
+
+*****************************************************************/
+struct compare{
+    bool operator()(struct Node *a, struct Node *b){
+        return a -> data > b -> data;
+    }
+};
+
+Node *sortedDll(Node *head, int k)
+{
+    // Write your code here
+    Node *newHead = NULL, *newList = NULL;
+    priority_queue<Node*, vector<Node*>, compare> pq;
+    
+    Node *p = head;
+    for(int i = 0; i <= k && p != NULL; i++){
+        pq.push(p);
+        p = p -> next;
+    }
+   
+    while(!pq.empty()){
+        
+        if(!newHead){
+            newList = pq.top();
+            newList -> prev = NULL;
+            newHead = newList; 
+        }
+        else{
+            newList -> next = pq.top();
+            newList -> next -> prev = newList;
+            newList = newList -> next;
+        }
+        
+        pq.pop();
+        
+        if(p){
+            pq.push(p);
+            p = p -> next;
+        }
+
+    }
+    
+    newList -> next = NULL;
+    
+    return newHead;
+}
+
+
+Java Solution
+
+/****************************************************************
+
+    Following is the class structure of the Node class:
+
+      class Node<T> {
+    	T data;
+    	Node<T> next;
+    	Node<T> prev;
+
+    	public Node(T data) {
+        	this.data = data;
+    	}
+	}
+
+*****************************************************************/
+import java.util.*;
+
+class CompareNode implements Comparator<Node<Integer>> {
+    public int compare(Node<Integer> a, Node<Integer> b){
+        return a.data - b.data;
+    }
+}
+
+public class Solution {
+
+	public static Node<Integer> sortedDll(Node<Integer> head, int k) {
+		// Write your code here.
+        PriorityQueue<Node<Integer>> pq = new PriorityQueue<Node<Integer>>(new CompareNode());
+        Node newHead = null, newList = null;
+        
+        Node p = head;
+        for(int i = 0; i <= k && p != null; i++){
+            pq.add(p);
+            p = p.next;
+        }
+        
+        while(!pq.isEmpty()){
+            
+            if(newHead == null){
+                newList = pq.peek();
+                newList.prev = null;
+                newHead = newList;
+            }
+            else{
+                newList.next = pq.peek();
+                newList.next.prev = newList;
+                newList = newList.next;
+            }
+            
+            pq.poll();
+            
+            if(p != null){
+                pq.add(p);
+                p = p.next;
+            }
+        }
+        
+        newList.next = null;
+        return newHead;
+	}
+
+}
