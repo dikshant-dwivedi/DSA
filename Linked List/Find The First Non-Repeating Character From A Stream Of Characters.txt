@@ -1,0 +1,214 @@
+C++ Solution Accepted
+
+#include<bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+class Solution {
+	public:
+	
+	    struct Node{
+	        char data;
+	        struct Node *next, *prev;
+	    };
+	    
+	    struct Node *head;
+	    struct Node *tail;
+	    
+	    Node* addNode(char i){
+	        Node *newNode = new Node();
+	        newNode -> data = i;
+	        if(!head){
+	            head = newNode;
+	            tail = newNode;
+	            newNode -> prev = NULL;
+	        }
+	        else{
+	            tail -> next = newNode;
+	            newNode -> prev = tail;
+	            tail = tail -> next;
+	        }
+	        newNode -> next = NULL;
+	        return newNode;
+	    }
+	    
+	    void removeNode(Node *nodeToBeDeleted){
+	        if(nodeToBeDeleted == head){
+	            head = head -> next;
+	            if(head)
+	                head -> prev = NULL;
+	        }
+	        else if(nodeToBeDeleted == tail){
+	            tail = tail -> prev;
+	            if(tail)
+	                tail -> next = NULL;
+	        }
+	        else{
+	            Node *previous = nodeToBeDeleted -> prev;
+	            nodeToBeDeleted -> prev -> next = nodeToBeDeleted -> next;
+	            nodeToBeDeleted -> next -> prev = previous;
+	        }
+	        delete nodeToBeDeleted;
+	    }
+	    
+	    string res = "";
+	    
+		string FirstNonRepeating(string A){
+		    // Code here
+		    bool repeated[256];
+		    Node* inDLL[256];
+		    
+		    head = NULL;
+		    tail = NULL;
+		    
+		    for(int i = 0; i < 256; i++){
+		        inDLL[i] = NULL;
+		        repeated[i] = false;
+		    }
+		    
+		    for(int i = 0; i < A.length(); i++){
+		        if(!repeated[A[i]]){
+		            if(!inDLL[A[i]])
+		                inDLL[A[i]] = addNode(A[i]);
+		            else{
+		                repeated[A[i]] = true;
+		                removeNode(inDLL[A[i]]);
+		            }
+		        }
+		        if(head)
+		            res += head -> data;
+		        else
+		            res += '#';
+		    }
+		    
+		    head = NULL;
+		    tail = NULL;
+		    
+		    return res;
+		}
+
+};
+
+// { Driver Code Starts.
+int main(){
+	int tc;
+	cin >> tc;
+	while(tc--){
+		string A;
+		cin >> A;
+		Solution obj;
+		string ans = obj.FirstNonRepeating(A);
+		cout << ans << "\n";
+	}
+	return 0;
+}  // } Driver Code Ends
+
+Java Solution Not accepted - tle in some case
+
+import java.io.*;
+class GFG
+{
+    public static void main(String[] args) throws IOException
+    {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine().trim());
+        while(T-->0)
+        {
+            String A = br.readLine().trim();
+            Solution ob = new Solution();
+            String ans = ob.FirstNonRepeating(A);
+            System.out.println(ans);
+        }
+    }
+}
+// } Driver Code Ends
+
+
+class Node{
+    public char data;
+    public Node prev, next;
+    
+    public Node(char i){
+        this.data = i;
+        this.prev = null;
+        this.next = null;
+    }
+}
+
+class DLL{
+    public Node head, tail;
+    
+    DLL(){
+        head = null;
+        tail = null;
+    }
+    
+    public Node addNode(char c){
+        Node newNode = new Node(c);
+        if(head == null){
+            head = newNode;
+            tail = newNode;
+        }
+        else{
+            tail.next = newNode;
+            newNode.prev = tail;
+            tail = tail.next;
+        }
+        return newNode;
+    }
+    
+    public void removeNode(Node nodeToBeDeleted){
+        if(nodeToBeDeleted == head){
+            head = head.next;
+            if(head != null)
+                head.prev = null;
+        }
+        else if(nodeToBeDeleted == tail){
+            tail = tail.prev;
+            if(tail != null)
+                tail.next = null;
+        }
+        else{
+            Node previous = nodeToBeDeleted.prev;
+            nodeToBeDeleted.prev.next = nodeToBeDeleted.next;
+            nodeToBeDeleted.next.prev = previous;
+        }
+    }
+}
+
+class Solution
+{
+    public String FirstNonRepeating(String A)
+    {
+        // code here
+        boolean[] repeated = new boolean[256];
+        Node[] inDLL = new Node[256];
+        
+        for(int i = 0; i < 256; i++){
+            inDLL[i] = null;
+            repeated[i] = false;
+        }
+        
+        DLL dll = new DLL();
+        String res = "";
+        for(int i = 0; i < A.length(); i++){
+            if(repeated[A.charAt(i)] == false){
+                if(inDLL[A.charAt(i)] == null){
+                    inDLL[A.charAt(i)] = dll.addNode(A.charAt(i));
+                }
+                else{
+                    dll.removeNode(inDLL[A.charAt(i)]);
+                    repeated[A.charAt(i)] = true;
+                }
+            }
+            if(dll.head == null){
+                res += '#';
+            }
+            else{
+                res += dll.head.data;
+            }
+        }
+        
+        return res;
+    }
+}
