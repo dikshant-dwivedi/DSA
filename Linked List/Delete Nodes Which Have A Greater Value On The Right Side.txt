@@ -1,0 +1,202 @@
+C++ Solution
+
+#include<bits/stdc++.h>
+
+using namespace std;
+
+struct Node
+{
+    int data;
+    Node* next;
+    
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+};
+
+
+void print(Node *root)
+{
+    Node *temp = root;
+    while(temp!=NULL)
+    {
+        cout<<temp->data<<" ";
+        temp=temp->next;
+    }
+}
+
+
+
+ // } Driver Code Ends
+/*
+
+The structure of linked list is the following
+
+struct Node
+{
+    int data;
+    Node* next;
+    
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+};
+*/
+class Solution
+{
+    public:
+    Node *compute(Node *head)
+    {
+        // your code goes here
+        if(!head || !(head -> next)) return head;
+        
+        Node *p = compute(head -> next);
+        head -> next = p;
+        
+        if(head -> data < p -> data){
+            delete head;
+            return p;
+        }
+        else{
+            return head;
+        }
+    }
+    
+};
+   
+
+
+// { Driver Code Starts.
+
+int main()
+{
+    int T;
+	cin>>T;
+
+	while(T--)
+	{
+		int K;
+		cin>>K;
+		struct Node *head = NULL;
+        struct Node *temp = head;
+
+		for(int i=0;i<K;i++){
+		    int data;
+		    cin>>data;
+			if(head==NULL)
+			    head=temp=new Node(data);
+			else
+			{
+				temp->next = new Node(data);
+				temp = temp->next;
+			}
+		}
+        Solution ob;
+        Node *result = ob.compute(head);
+        print(result);
+        cout<<endl;
+    }
+}
+  // } Driver Code Ends
+
+Java Solution
+
+import java.util.*;
+
+class Node
+{
+
+    int data;
+    Node next;
+
+    Node(int d)
+    {
+        data = d;
+        next = null;
+    }
+}
+
+
+public class LinkedList
+{
+    
+ 
+
+    /* Function to print linked list */
+   public static void print(Node root)
+    {
+        Node temp = root;
+        while(temp!=null)
+        {
+            System.out.print(temp.data + " ");
+            temp=temp.next;
+        }
+    }
+
+
+    /* Driver program to test above functions */
+    public static void main(String args[])
+    {
+
+        /* Constructed Linked List is 1.2.3.4.5.6.
+         7.8.8.9.null */
+        int value;
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        while (t > 0 && sc.hasNextInt() )
+        {
+            int n = sc.nextInt();
+            
+            //int n=Integer.parseInt(br.readLine());
+            int a1 = sc.nextInt();
+            Node head = new Node(a1);
+            Node tail = head;
+
+            for (int i = 1; i < n && sc.hasNextInt() ; i++)
+            {
+                int a = sc.nextInt();
+                tail.next = new Node(a);
+                tail = tail.next;
+            }
+
+
+            Node result = new Solution().compute(head);
+            print(result);
+            System.out.println();
+            t--;
+        }
+    }
+}// } Driver Code Ends
+
+
+/*
+class Node {
+   int data;
+   Node next;
+
+  Node(int data) {
+      this.data = data;
+  }
+}
+*/
+class Solution
+{
+    Node compute(Node head)
+    {
+        // your code here
+        if(head == null || head.next == null) return head;
+        
+        Node p = compute(head.next);
+        head.next = p;
+        
+        if(head.data < p.data){
+            return p;
+        }
+        else{
+            return head;
+        }
+    }
+}
+  
