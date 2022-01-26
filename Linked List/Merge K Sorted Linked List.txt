@@ -1,0 +1,234 @@
+C++ Solution
+
+// C++ program to merge k sorted arrays of size n each
+#include <bits/stdc++.h>
+using namespace std;
+
+// A Linked List node
+struct Node
+{
+	int data;
+	Node* next;
+	
+	Node(int x){
+	    data = x;
+	    next = NULL;
+	}
+	
+};
+
+/* Function to print nodes in a given linked list */
+void printList(Node* node)
+{
+	while (node != NULL)
+	{
+		printf("%d ", node->data);
+		node = node->next;
+	}
+	cout<<endl;
+}
+
+ // } Driver Code Ends
+/*Linked list Node structure
+
+struct Node
+{
+	int data;
+	Node* next;
+	
+	Node(int x){
+	    data = x;
+	    next = NULL;
+	}
+	
+};
+*/ 
+
+class Solution{
+  public:
+    //Function to merge K sorted linked list.
+    
+    Node *mergeTwoList(Node *a, Node *b){
+        
+        if(!a) return b;
+        if(!b) return a;
+        
+        Node *result;
+        if(a -> data < b -> data){
+            result = a;
+            result -> next = mergeTwoList(a -> next, b);
+        }
+        else{
+            result = b;
+            result -> next = mergeTwoList(a, b -> next);
+        }
+        
+        return result;
+        
+    }
+    
+    Node * mergeKLists(Node *arr[], int K)
+    {
+           // Your code here
+        Node *result = NULL;
+        for(int i = 0; i < K; i++){
+            result = mergeTwoList(result, arr[i]);
+        }
+        return result;
+    }
+};
+
+
+
+// { Driver Code Starts.
+// Driver program to test above functions
+int main()
+{
+   int t;
+   cin>>t;
+   while(t--)
+   {
+	   int N;
+	   cin>>N;
+       struct Node *arr[N];
+       for(int j=0;j<N;j++)
+        {
+           int n;
+           cin>>n;
+
+           int x;
+           cin>>x;
+           arr[j]=new Node(x);
+           Node *curr = arr[j];
+           n--;
+
+           for(int i=0;i<n;i++)
+           {
+               cin>>x;
+               Node *temp = new Node(x);
+               curr->next =temp;
+               curr=temp;
+           }
+   		}
+   		Solution obj;
+   		Node *res = obj.mergeKLists(arr,N);
+		printList(res);
+
+   }
+
+	return 0;
+}
+  // } Driver Code Ends
+
+Java Solution
+
+import java.util.*;
+
+class Node
+{
+    int data;
+    Node next;
+    
+    Node(int key)
+    {
+        data = key;
+        next = null;
+    }
+}
+
+
+class GfG
+{
+    public static void printList(Node node)
+    {
+        while(node != null)
+        {
+            System.out.print(node.data + " ");
+            node = node.next;
+        }
+    }
+    
+    public static void main (String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        int t = sc.nextInt();
+        while(t-- > 0)
+        {   
+            int N = sc.nextInt();
+            
+            Node []a = new Node[N];
+            
+            for(int i = 0; i < N; i++)
+            {
+                int n = sc.nextInt();
+                
+                Node head = new Node(sc.nextInt());
+                Node tail = head;
+                
+                for(int j=0; j<n-1; j++)
+                {
+                    tail.next = new Node(sc.nextInt());
+                    tail = tail.next;
+                }
+                
+                a[i] = head;
+            }
+            
+            Solution g = new Solution();
+             
+            Node res = g.mergeKList(a,N);
+            if(res!=null)
+                printList(res);
+            System.out.println();
+        }
+    }
+}// } Driver Code Ends
+
+
+/*class Node
+{
+    int data;
+    Node next;
+    
+    Node(int key)
+    {
+        data = key;
+        next = null;
+    }
+}
+*/
+
+// a is an array of Nodes of the heads of linked lists
+// and N is size of array a
+
+
+class Solution
+{
+    Node mergeTwoList(Node a, Node b){
+        
+        if(a == null) return b;
+        if(b == null) return a;
+        
+        Node result;
+        if(a.data < b.data){
+            result = a;
+            result.next = mergeTwoList(a.next, b);
+        }
+        else{
+            result = b;
+            result.next = mergeTwoList(a, b.next);
+        }
+        
+        return result;
+    }
+    //Function to merge K sorted linked list.
+    Node mergeKList(Node[]arr,int K)
+    {
+        //Add your code here.
+        Node result = null;
+        for(int i = 0; i < K; i++){
+            result = mergeTwoList(result, arr[i]);
+        }
+        return result;
+    }
+}
