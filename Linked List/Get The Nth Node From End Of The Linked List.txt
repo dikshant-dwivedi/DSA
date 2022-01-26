@@ -1,0 +1,214 @@
+C++ Solution
+
+// C program to find n'th Node in linked list
+#include <stdio.h>
+#include <stdlib.h>
+#include<iostream>
+using namespace std;
+
+/* Link list Node */
+struct Node {
+  int data;
+  struct Node *next;
+  Node(int x) {
+    data = x;
+    next = NULL;
+  }
+};
+
+
+/* Function to get the nth node from the last of a linked list*/
+int getNthFromLast(struct Node* head, int n);
+
+
+
+/* Driver program to test above function*/
+int main()
+{
+  int T,i,n,l,k;
+
+    cin>>T;
+
+    while(T--){
+    struct Node *head = NULL,  *tail = NULL;
+
+        cin>>n>>k;
+        int firstdata;
+        cin>>firstdata;
+        head = new Node(firstdata);
+        tail = head;
+        for(i=1;i<n;i++)
+        {
+            cin>>l;
+            tail->next = new Node(l);
+            tail = tail->next;
+        }
+
+    cout<<getNthFromLast(head, k)<<endl;
+    }
+    return 0;
+}// } Driver Code Ends
+
+
+/* struct Node {
+  int data;
+  struct Node *next;
+  Node(int x) {
+    data = x;
+    next = NULL;
+  }
+};
+*/
+
+//Function to find the data of nth node from the end of a linked list.
+int getNthFromLast(Node *head, int n)
+{
+       // Your code here
+       
+    int len = 0;
+    Node *p = head;
+    
+    while(p){
+        len++;
+        p = p -> next;
+    }
+    
+    if(n > len)
+        return -1;
+    
+    n = len - n + 1;
+    int i = 1;
+    p = head; 
+    
+    while(i < n && p){
+        i++;
+        p = p -> next;
+    }
+        
+    return p -> data;
+}
+
+
+Java Solution
+
+import java.util.*;
+class Node
+{
+    int data;
+    Node next;
+    Node(int d) 
+    {
+        data = d; 
+        next = null;
+    }
+}
+	
+
+	
+public class LinkedList_Element_From_Last
+{
+    Node head;  
+	Node tail;
+	/* Function to print linked list */
+    void printList(Node head)
+    {
+        Node temp = head;
+        while (temp != null)
+        {
+           System.out.print(temp.data+" ");
+           temp = temp.next;
+        }  
+        System.out.println();
+    }
+	
+ 
+    /* Inserts a new Node at front of the list. */
+    public void addToTheLast(Node node) 
+	{
+
+		if (head == null) 
+		{
+			head = node;
+			tail = node;
+		} else 
+		{
+		    tail.next = node;
+		    tail = node;
+		}
+    }
+	  
+     /* Drier program to test above functions */
+    public static void main(String args[])
+    {
+         Scanner sc = new Scanner(System.in);
+		 int t=sc.nextInt();
+		 
+		 while(t>0)
+         {
+			int n = sc.nextInt();
+			int k = sc.nextInt();
+			LinkedList_Element_From_Last llist = new LinkedList_Element_From_Last();
+			//int n=Integer.parseInt(br.readLine());
+			int a1=sc.nextInt();
+			Node head= new Node(a1);
+            llist.addToTheLast(head);
+            for (int i = 1; i < n; i++) 
+			{
+				int a = sc.nextInt(); 
+				llist.addToTheLast(new Node(a));
+			}
+          
+		//System.out.println(llist.head.data);
+        GfG g = new GfG(); 
+		//System.out.println(k);
+		System.out.println(g.getNthFromLast(llist.head,k));
+		
+			t--;
+		}
+	}
+}
+
+
+	
+	// } Driver Code Ends
+
+
+/* Structure of node
+
+class Node
+{
+    int data;
+    Node next;
+    Node(int d) {data = d; next = null; }
+}
+*/
+
+class GfG
+{
+    //Function to find the data of nth node from the end of a linked list.
+    int getNthFromLast(Node head, int n)
+    {
+    	// Your code here	
+    	int len = 0;
+    	
+    	Node p = head;
+    	while(p != null){
+    	    len++;
+    	    p = p.next;
+    	}
+    	
+    	if(n > len)
+    	    return -1;
+    	    
+    	n = len - n + 1;
+    	int i = 1;
+    	p = head;
+    	
+    	while(i < n && p != null){
+    	    p = p.next;
+    	    i++;
+    	}
+    	
+    	return p.data;
+    }
+}
