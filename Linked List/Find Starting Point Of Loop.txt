@@ -26,13 +26,11 @@ public:
                         slow = slow -> next;
                         fast = fast -> next;
                     }  
+                    return fast -> next;
                 }
                 else{
-                    while(fast -> next != slow){
-                        fast = fast -> next;
-                    }
+                    return fast;
                 }
-                return fast -> next;
             }
             
         }
@@ -57,31 +55,25 @@ Java Solution
 public class Solution {
     public ListNode detectCycle(ListNode head) {
         
-        ListNode slow = head, fast = head;
+    ListNode slow = head, fast = head;
         
-        while(slow != null && fast != null && fast.next != null){
-            slow = slow.next;
-            fast = fast.next.next;
-            if(slow == fast){
-                slow = head;
-                int i = 0;
-                if(slow != fast){
-                   while(fast.next != slow.next){
-                       fast = fast.next;
-                       slow = slow.next;
-                       i++;
-                   } 
-                }
-                else{
-                    while(fast.next != slow){
-                        fast = fast.next;
-                        i++;
-                    }
+    while(fast != null && fast.next != null){
+        slow = slow.next;
+        fast = fast.next.next;
+        if(slow == fast){
+            slow = head;
+            if(slow != fast){
+                while(slow.next != fast.next){
+                    slow = slow.next;
+                    fast = fast.next;
                 }
                 return fast.next;
             }
+            else{
+                return fast;
+            }
         }
-        
-        return null;
     }
+    return null;
+}
 }
