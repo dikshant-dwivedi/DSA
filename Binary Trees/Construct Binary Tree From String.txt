@@ -1,0 +1,164 @@
+C++ Solution
+
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Node{
+    int data;
+    Node *left, *right;
+    Node(int d){
+        data = d;
+        left = NULL;
+        right = NULL;
+    }
+};
+
+Node *getTreeFromString(string s, int &start){
+    
+    if(start >= s.length()){
+        return NULL;
+    }
+    
+    bool neg = false;
+    if(s[start] == '-'){
+        start++;
+        neg = true;
+    }
+    
+    int num = 0;
+    while(start < s.length() && s[start] - '0' >= 0 && s[start] - '0' <= 9){
+        num = num * 10 + s[start] - '0';
+        start++;
+    }
+    
+    if(neg) num = -num;
+    
+    Node *root = new Node(num);
+    if(start < s.length() && s[start] == '('){
+        start++;
+        root -> left = getTreeFromString(s, start); 
+    }
+    if(start < s.length() && s[start] == ')'){
+        start++;
+        return root;
+    }
+    if(start < s.length() && s[start] == '('){
+        start++;
+        root -> right = getTreeFromString(s, start);
+    }
+    if(start < s.length() && s[start] == ')'){
+        start++;
+        return root;
+    }
+    
+    return root;
+}
+
+void preorder(Node *root){
+    if(root){
+        cout << root -> data << " ";
+        preorder(root -> left);
+        preorder(root -> right);
+    }
+}
+
+int main()
+{
+    string s;
+    cin >> s;
+    if(s.length() == 0){
+        preorder(NULL);
+    }
+    int start = 0;
+    Node *root = getTreeFromString(s, start);
+    preorder(root);
+    return 0;
+}
+
+Java Solution
+
+/******************************************************************************
+
+Welcome to GDB Online.
+GDB online is an online compiler and debugger tool for C, C++, Python, Java, PHP, Ruby, Perl,
+C#, VB, Swift, Pascal, Fortran, Haskell, Objective-C, Assembly, HTML, CSS, JS, SQLite, Prolog.
+Code, Compile, Run and Debug online from anywhere in world.
+
+*******************************************************************************/
+class Node{
+    public int data;
+    public Node left;
+    public Node right;
+    public Node(int d){
+        data = d;
+        left = null;
+        right = null;
+    }
+}
+
+class Start{
+    public int s;
+    public Start(int _s){
+        s = s;
+    }
+}
+
+public class Main
+{
+    public static Node stringToTree(String s, Start start){
+        if(start.s >= s.length()){
+            return null;   
+        }
+        int neg = 0;
+        if(s.charAt(start.s) == '-'){
+            start.s++;
+            neg = 1;
+        }
+        int num = 0;
+        while(start.s < s.length() && s.charAt(start.s) - '0' >= 0 && s.charAt(start.s) - '0' <= 9){
+            num = num * 10 + (s.charAt(start.s) - '0');
+            start.s++;
+        }
+        if(neg == 1){
+            num = -num;
+        }
+        Node root = new Node(num);
+        if(start.s < s.length() && s.charAt(start.s) == '('){
+            start.s++;
+            root.left = stringToTree(s, start);
+        }
+        if(start.s < s.length() && s.charAt(start.s) == ')'){
+            start.s++;
+            return root;
+        }
+        if(start.s < s.length() && s.charAt(start.s) == '('){
+            start.s++;
+            root.right = stringToTree(s, start);
+        }
+        if(start.s < s.length() && s.charAt(start.s) == ')'){
+            start.s++;
+            return root;
+        }
+        return root;
+    }
+    
+    public static void preorder(Node root){
+        if(root != null){
+            System.out.print(root.data + " ");
+            preorder(root.left);
+            preorder(root.right);
+        }
+    }
+    
+	public static void main(String[] args) {
+		Start start = new Start(0);
+		String s = "-4(2(3)(1))(6(5))";
+		if(s.length() == 0){
+		    preorder(null);
+		}
+		else{
+		    preorder(stringToTree(s, start));
+		}
+		System.out.println();
+	}
+}
