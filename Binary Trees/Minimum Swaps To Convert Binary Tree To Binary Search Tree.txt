@@ -1,0 +1,140 @@
+C++ Solution
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int minSwaps(vector<int> &inorder){
+    
+    int n = inorder.size();
+    vector<pair<int, int>> arrPos;
+    for(int i = 0; i < n; i++){
+        arrPos.push_back({inorder[i], i});
+    }
+    
+    sort(arrPos.begin(), arrPos.end());
+    
+    int minSwaps = 0;
+    vector<int> vis(n, 0);
+    
+    for(int i = 0; i < n; i++){
+        
+        if(vis[i] || arrPos[i].second == i)
+            continue;
+            
+        int cycleSize = 0;
+        int j = i;
+        while(!vis[j]){
+            vis[j] = 1;
+            j = arrPos[j].second;
+            cycleSize++;
+        }
+        
+        if(cycleSize > 0){
+            minSwaps += (cycleSize - 1);
+        }
+        
+    }
+    
+    return minSwaps;
+}
+
+void inorder(vector<int> &arr, vector<int> &inorderArr, int i){
+    if(i < arr.size()){
+        inorder(arr, inorderArr, 2*i + 1);
+        inorderArr.push_back(arr[i]);
+        inorder(arr, inorderArr, 2*i + 2);
+    }
+}
+
+int main()
+{
+    vector<int> arr({1, 5, 4, 3, 2});
+	//vector<int>arr({5, 6, 7, 8, 9, 10, 11});
+	vector<int> inorderArr;
+	inorder(arr, inorderArr, 0);
+	cout << minSwaps(inorderArr);
+    return 0;
+}
+
+Java Solution
+
+/******************************************************************************
+
+Welcome to GDB Online.
+GDB online is an online compiler and debugger tool for C, C++, Python, Java, PHP, Ruby, Perl,
+C#, VB, Swift, Pascal, Fortran, Haskell, Objective-C, Assembly, HTML, CSS, JS, SQLite, Prolog.
+Code, Compile, Run and Debug online from anywhere in world.
+
+*******************************************************************************/
+import java.util.*;
+
+public class Main
+{
+    public static class Pair{
+        int first;
+        int second;
+        public Pair(int f, int s){
+            first = f;
+            second = s;
+        }
+    }
+    
+    static class SortPair implements Comparator<Pair>{
+        public int compare(Pair a, Pair b){
+            return a.first - b.first;
+        }
+    }
+    
+    public static int minSwaps(Vector<Integer> arr){
+        
+        int n = arr.size();
+        ArrayList<Pair> arrPos = new ArrayList<Pair>();
+        
+        for(int i = 0; i < n; i++){
+            arrPos.add(new Pair(arr.get(i), i));
+        }
+        
+        Collections.sort(arrPos, new SortPair());
+        
+        boolean vis[] = new boolean[n];
+        Arrays.fill(vis, false);
+        
+        int minSwaps = 0;
+        for(int i = 0; i < n; i++){
+            
+            if(vis[i] || arrPos.get(i).second == i){
+                continue;
+            }
+            
+            int cycleSize = 0;
+            int j = i;
+            while(!vis[j]){
+                vis[j] = true;
+                j = arrPos.get(j).second;
+                cycleSize++;
+            }
+            
+            if(cycleSize > 0){
+                minSwaps += (cycleSize - 1);
+            }
+        }
+        
+        return minSwaps;
+    }
+    
+    public static void inorder(int arr[], Vector<Integer> inorderArr, int i){
+        if(i < arr.length){
+            inorder(arr, inorderArr, 2*i + 1);
+            inorderArr.add(arr[i]);
+            inorder(arr, inorderArr, 2*i + 2);
+        }
+    }
+    
+	public static void main(String[] args) {
+		//int arr[] = {1, 5, 4, 3, 2};
+		int arr[] = {5, 6, 7, 8, 9, 10, 11};
+		Vector<Integer> inorderArr = new Vector<Integer>();
+		inorder(arr, inorderArr, 0);
+		System.out.println(minSwaps(inorderArr));
+	}
+}
