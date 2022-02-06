@@ -1,0 +1,155 @@
+C++ Solution
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Graph{
+    int V;
+    vector<int> *connections;
+    
+    public:
+    
+    Graph(int _V){
+        V = _V;
+        connections = new vector<int>[V];
+    }
+    
+    void addEdge(int u, int w){
+        connections[u].push_back(w);
+        connections[w].push_back(u);
+    }
+    
+    bool isCyclic(int v, vector<int> &visited, int parent){
+        
+        visited[v] = true;
+        
+        for(auto i : connections[v]){
+            if(!visited[i]){ 
+                if(isCyclic(i, visited, v)){
+                    return true;
+                }
+            }
+            else if(i != parent) return true;
+        }
+        
+        return false;
+    }
+    
+    bool isTree(){
+        
+        vector<int> visited(V, false);
+        
+        int doesCycleExist = isCyclic(0, visited, -1);
+        if(doesCycleExist){
+           return false; 
+        }
+        
+        for(int i = 0; i < V; i++){
+            if(!visited[i]) return false;
+        }
+        
+        return true;
+    }
+};
+
+int main()
+{
+    Graph g1(5);
+    g1.addEdge(1, 0);
+    g1.addEdge(0, 2);
+    g1.addEdge(0, 3);
+    g1.addEdge(3, 4);
+    
+    cout << "Is Graph G1 a tree? Ans: " << g1.isTree() << endl;
+    
+    Graph g2(5);
+    g2.addEdge(1, 0);
+    g2.addEdge(0, 2);
+    g2.addEdge(2, 1);
+    g2.addEdge(0, 3);
+    g2.addEdge(3, 4);
+    
+    cout << "Is Graph G2 a tree? Ans: " << g2.isTree() << endl;
+    
+    return 0;
+}
+
+Java Solution
+
+import java.util.*;
+
+class Graph{
+    int V;
+    ArrayList<ArrayList<Integer>> connections;
+    
+    public Graph(int _V){
+        V = _V;
+        connections = new ArrayList<ArrayList<Integer>>();
+        for(int i = 0; i < V; i++){
+            connections.add(new ArrayList<Integer>());
+        }
+    }
+    
+    public void addEdge(int u, int w){
+        connections.get(u).add(w);
+        connections.get(w).add(u);
+    }
+    
+    public boolean isCyclic(int v, ArrayList<Boolean> visited, int parent){
+        visited.set(v, true);
+        for(Integer i : connections.get(v)){
+            if(!visited.get(i)){
+                if(isCyclic(i, visited, v)){
+                    return true;
+                }
+            }
+            else if(i != parent){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean isTree(){
+        
+        ArrayList<Boolean> visited = new ArrayList<>();
+        for(int i = 0; i < V; i++){
+            visited.add(false);
+        }
+        
+        boolean doesCycleExist = isCyclic(0, visited, -1);
+        if(doesCycleExist){
+            return false;
+        }
+        
+        for(boolean i: visited){
+            if(!i){ return false; }
+        }
+        
+        return true;
+    }
+}
+
+
+public class Main
+{
+	public static void main(String[] args) {
+	    
+	Graph g1 = new Graph(5);
+	g1.addEdge(1, 0);
+        g1.addEdge(0, 2);
+        g1.addEdge(0, 3);
+        g1.addEdge(3, 4);
+        
+        System.out.println("Is Graph G1 a tree? Ans: " + g1.isTree());
+        
+        Graph g2 = new Graph(5);
+        g2.addEdge(1, 0);
+        g2.addEdge(0, 2);
+        g2.addEdge(2, 1);
+        g2.addEdge(0, 3);
+        g2.addEdge(3, 4);
+        
+        System.out.println("Is Graph G2 a tree? Ans: " + g2.isTree());
+	}
+}
