@@ -1,0 +1,132 @@
+C++ Solution
+
+// { Driver Code Starts
+//Initial Template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+//User function Template for C++
+
+class Solution {
+  public:
+    int checkMirrorTree(int n, int e, int A[], int B[]) {
+        // code here
+        vector<queue<int>> q(n+1);
+        vector<stack<int>> s(n+1);
+        
+        for(int i = 0; i < 2*e; i+=2){
+            s[A[i]].push(A[i+1]);
+            q[B[i]].push(B[i+1]);
+        }
+        
+        for(int i = 1; i <= n; i++){
+            while(!s[i].empty() && !q[i].empty()){
+                int a = s[i].top();
+                int b = q[i].front();
+                s[i].pop();
+                q[i].pop();
+                if(a != b){
+                    return 0;
+                }
+            }
+        }
+        
+        return 1;
+    }
+};
+
+// { Driver Code Starts.
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n,e;
+        
+        cin>>n>>e;
+        int A[2*e], B[2*e];
+        
+        for(int i=0; i<2*e; i++)
+            cin>>A[i];
+            
+        for(int i=0; i<2*e; i++)
+            cin>>B[i];
+
+        Solution ob;
+        cout << ob.checkMirrorTree(n,e,A,B) << endl;
+    }
+    return 0;
+}  // } Driver Code Ends
+
+Java Solution
+
+// { Driver Code Starts
+//Initial Template for Java
+
+import java.io.*;
+import java.util.*;
+
+class GFG {
+    public static void main(String args[]) throws IOException {
+        BufferedReader read =
+            new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(read.readLine());
+        while (t-- > 0) {
+            String S[] = read.readLine().split(" ");
+            
+            int n = Integer.parseInt(S[0]);
+            int e = Integer.parseInt(S[1]);
+            
+            String S1[] = read.readLine().split(" ");
+            String S2[] = read.readLine().split(" ");
+            
+            int[] A = new int[2*e];
+            int[] B = new int[2*e];
+            
+            for(int i=0; i<2*e; i++)
+            {
+                A[i] = Integer.parseInt(S1[i]);
+                B[i] = Integer.parseInt(S2[i]);
+            }
+
+            Solution ob = new Solution();
+            System.out.println(ob.checkMirrorTree(n,e,A,B));
+        }
+    }
+}// } Driver Code Ends
+
+
+//User function Template for Java
+
+class Solution {
+    static int checkMirrorTree(int n, int e, int[] A, int[] B) {
+        // code here
+        List<Queue<Integer>> q = new ArrayList<>();
+        List<Stack<Integer>> s = new ArrayList<>();
+        
+        //i = 0 is important here
+        for(int i = 0; i <= n; i++){
+            s.add(new Stack<Integer>());
+            Queue<Integer> queue = new LinkedList<Integer>();
+            q.add(queue);
+        }
+        
+        for(int i = 0; i < 2*e; i += 2){
+            s.get(A[i]).push(A[i+1]);
+            q.get(B[i]).add(B[i+1]);
+        }
+        
+        for(int i = 1; i <= n; i++){
+            while(!q.get(i).isEmpty() && !s.get(i).isEmpty()){
+                int a = s.get(i).pop();
+                int b = q.get(i).poll();
+                if(a != b){
+                    return 0;
+                }
+            }
+        }
+        
+        return 1;
+    }
+};
