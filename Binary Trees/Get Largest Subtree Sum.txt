@@ -1,0 +1,48 @@
+C++ Solution
+
+void utilFunc(Node *root, int &maxSum){
+    if(!root){
+        return 0;
+    }
+    int sum = root -> data + utilFunc(root -> left, maxSum) + utilFunc(root -> right, maxSum);
+    maxSum = max(sum, maxSum);
+    return sum;
+}
+
+int getMaxSum(Node *root){
+    int maxSum = INT_MIN;
+    int sum = utilFunc(root, maxSum);
+    return maxSum;
+}
+
+
+Java Solution
+
+class MaxSum{
+    public int s;
+    public MaxSum(int _s){
+        s = _s;
+    }
+}
+
+public class Main
+{
+    public static utilFunc(Node root, MaxSum maxSum){
+        if(root == null){
+            return 0;
+        }
+        int sum = root.data + utilFunc(root.left, maxSum) + utilFunc(root.right, maxSum);
+        maxSum = Math.max(sum, maxSum);
+        return sum;
+    }
+    
+    public static getMaxSum(Node root){
+        int MaxSum maxSum = new MaxSum(Integer.MAX_VALUE);
+        int sum = utilFunc(root, maxSum);
+        return maxSum.s;
+    }
+    
+	public static void main(String[] args) {
+		
+	}
+}
