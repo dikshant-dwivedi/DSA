@@ -1,0 +1,292 @@
+C++ Solution
+
+// { Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Node
+{
+    int data;
+    struct Node *left;
+    struct Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = NULL;
+    }
+}; 
+
+// Function to Build Tree
+Node* buildTree(string str)
+{   
+    // Corner Case
+    if(str.length() == 0 || str[0] == 'N')
+            return NULL;
+    
+    // Creating vector of strings from input 
+    // string after spliting by space
+    vector<string> ip;
+    
+    istringstream iss(str);
+    for(string str; iss >> str; )
+        ip.push_back(str);
+        
+    // Create the root of the tree
+    Node *root = new Node(stoi(ip[0]));
+        
+    // Push the root to the queue
+    queue<Node*> queue;
+    queue.push(root);
+        
+    // Starting from the second element
+    int i = 1;
+    while(!queue.empty() && i < ip.size()) {
+            
+        // Get and remove the front of the queue
+        Node* currNode = queue.front();
+        queue.pop();
+            
+        // Get the current node's value from the string
+        string currVal = ip[i];
+            
+        // If the left child is not null
+        if(currVal != "N") {
+
+            // Create the left child for the current Node
+            currNode->left = new Node(stoi(currVal));
+                
+            // Push it to the queue
+            queue.push(currNode->left);
+        }
+            
+        // For the right child
+        i++;
+        if(i >= ip.size())
+            break;
+        currVal = ip[i];
+            
+        // If the right child is not null
+        if(currVal != "N") {
+                
+            // Create the right child for the current node
+            currNode->right = new Node(stoi(currVal));
+                
+            // Push it to the queue
+            queue.push(currNode->right);
+        }
+        i++;
+    }
+    
+    return root;
+}
+
+void preorder(Node* root){
+    if(!root){
+        return ;
+    }
+    cout<<root->data<<" ";
+    preorder(root->left);
+    preorder(root->right);
+}
+
+
+ // } Driver Code Ends
+//function Template for C++
+
+/*
+Structure of the node of the binary tree is as
+struct Node {
+	int data;
+	struct Node* left, *right;
+};
+*/
+// you are required to complete this function
+// the function and return an vector of Node
+// which contains all the duplicate sub-tree
+
+string getAllDups(Node *root, unordered_map<string, int> &m, vector<Node*> &dups){
+    if(!root) return "$";
+    string subtree = getAllDups(root -> left, m, dups);
+    subtree += getAllDups(root -> right, m, dups);
+    subtree += to_string(root -> data);
+    m[subtree]++;
+    if(m[subtree] == 2) dups.push_back(root);
+    return subtree;
+}
+
+vector<Node*> printAllDups(Node* root)
+{
+    // Code here
+    unordered_map<string, int> m;
+    vector<Node*> dups;
+    string treeString = getAllDups(root, m, dups);
+    return dups;
+}
+
+// { Driver Code Starts.
+int main()
+{
+    int t;
+	scanf("%d ",&t);
+    while(t--)
+    {
+        string treeString;
+		getline(cin,treeString);
+		Node* root = buildTree(treeString);
+		vector<Node*> res = printAllDups(root);
+		
+		for(int i=0;i<res.size();i++){
+		    preorder(res[i]);
+		    cout<<endl;
+		}
+    }
+    return 0;
+}
+
+
+  // } Driver Code Ends
+
+Java Solution
+
+// { Driver Code Starts
+//Initial Template for Java
+
+import java.io.*;
+import java.util.*;
+import java.lang.*; 
+
+
+class Node {
+    int data;
+    Node left, right;
+    
+    public Node(int data){
+        this.data = data;
+    }
+}
+
+class GFG {
+    
+    
+    static Node buildTree(String str){
+        
+        if(str.length()==0 || str.charAt(0)=='N'){
+            return null;
+        }
+        
+        String ip[] = str.split(" ");
+        // Create the root of the tree
+        Node root = new Node(Integer.parseInt(ip[0]));
+        // Push the root to the queue
+        
+        Queue<Node> queue = new LinkedList<>(); 
+        
+        queue.add(root);
+        // Starting from the second element
+        
+        int i = 1;
+        while(queue.size()>0 && i < ip.length) {
+            
+            // Get and remove the front of the queue
+            Node currNode = queue.peek();
+            queue.remove();
+                
+            // Get the current node's value from the string
+            String currVal = ip[i];
+                
+            // If the left child is not null
+            if(!currVal.equals("N")) {
+                    
+                // Create the left child for the current node
+                currNode.left = new Node(Integer.parseInt(currVal));
+                // Push it to the queue
+                queue.add(currNode.left);
+            }
+                
+            // For the right child
+            i++;
+            if(i >= ip.length)
+                break;
+                
+            currVal = ip[i];
+                
+            // If the right child is not null
+            if(!currVal.equals("N")) {
+                    
+                // Create the right child for the current node
+                currNode.right = new Node(Integer.parseInt(currVal));
+                    
+                // Push it to the queue
+                queue.add(currNode.right);
+            }
+            i++;
+        }
+        
+        return root;
+    }
+    public static void preorder(Node root){
+        if(root == null)
+            return;
+        System.out.print(root.data+" ");
+        preorder(root.left);
+        preorder(root.right);
+    }
+    
+	public static void main (String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int t=Integer.parseInt(br.readLine());
+		while(t-- > 0){
+		    String s = br.readLine();
+	    	Node root = buildTree(s);
+		    Solution obj = new Solution();
+		    List<Node> res = obj.printAllDups(root);
+		    for(int i = 0;i<res.size();i++){
+		        preorder(res.get(i));
+		        System.out.println();
+		    }
+		    
+		}
+	}
+}
+// } Driver Code Ends
+
+
+//User function Template for Java
+
+/*
+class Node {
+    int data;
+    Node left, right;
+    
+    public Node(int data){
+        this.data = data;
+    }
+}
+*/
+
+class Solution{
+    
+    HashMap<String, Integer> m;
+    List<Node> l;
+   
+    public String getAllDups(Node root){
+        if(root == null) return "$";
+        String subtree = getAllDups(root.left);
+        subtree += getAllDups(root.right);
+        subtree += Integer.toString(root.data);
+        int count = m.containsKey(subtree) ? m.get(subtree) + 1 : 1;
+        m.put(subtree, count);
+        if(m.get(subtree) == 2) l.add(root);
+        return subtree;
+    }
+   
+    public List<Node> printAllDups(Node root)
+    {
+       //code here
+       m = new HashMap<>();
+       l = new ArrayList<>();
+       String subtree = getAllDups(root);
+       return l;  
+    }
+    
+}
