@@ -1,0 +1,288 @@
+C++ Solution
+
+// { Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Node
+{
+    int data;
+    struct Node *left;
+    struct Node *right;
+};
+Node* newNode(int val)
+{
+    Node* temp = new Node;
+    temp->data = val;
+    temp->left = NULL;
+    temp->right = NULL;
+    
+    return temp;
+}
+Node* buildTree(string str)
+{   
+    // Corner Case
+    if(str.length() == 0 || str[0] == 'N')
+            return NULL;
+    
+    // Creating vector of strings from input 
+    // string after spliting by space
+    vector<string> ip;
+    
+    istringstream iss(str);
+    for(string str; iss >> str; )
+        ip.push_back(str);
+        
+    // Create the root of the tree
+    Node* root = newNode(stoi(ip[0]));
+        
+    // Push the root to the queue
+    queue<Node*> queue;
+    queue.push(root);
+        
+    // Starting from the second element
+    int i = 1;
+    while(!queue.empty() && i < ip.size()) {
+            
+        // Get and remove the front of the queue
+        Node* currNode = queue.front();
+        queue.pop();
+            
+        // Get the current node's value from the string
+        string currVal = ip[i];
+            
+        // If the left child is not null
+        if(currVal != "N") {
+                
+            // Create the left child for the current node
+            currNode->left = newNode(stoi(currVal));
+                
+            // Push it to the queue
+            queue.push(currNode->left);
+        }
+            
+        // For the right child
+        i++;
+        if(i >= ip.size())
+            break;
+        currVal = ip[i];
+            
+        // If the right child is not null
+        if(currVal != "N") {
+                
+            // Create the right child for the current node
+            currNode->right = newNode(stoi(currVal));
+                
+            // Push it to the queue
+            queue.push(currNode->right);
+        }
+        i++;
+    }
+    
+    return root;
+}
+int kthAncestor(Node *root, int k, int node);
+
+int main()
+{
+    int t;
+	scanf("%d ",&t);
+    while(t--)
+    {
+        int k , node;
+        scanf("%d ",&k);
+        scanf("%d ",&node);
+        string s;
+		getline(cin,s);
+		Node* root = buildTree(s);
+		cout<<kthAncestor(root,k,node)<<endl;
+    }
+    return 0;
+}
+// } Driver Code Ends
+
+
+//User function Template for C++
+/*
+Structure of the node of the binary tree is as
+struct Node
+{
+	int data;
+	struct Node *left, *right;
+};
+*/
+// your task is to complete this function
+
+/**the idea is to traverse through the tree and find the node whose ancestor is to
+be found. Once it is found we will return the hops made to reach to the ancestor.
+Once the hops made is equal to k, we have found the ancestor and we will save it.
+since the total hops needed to reach the ancestor is equal to k - 1, once we will reach
+the target node, we will return 1 instead of 0*/
+int utilFunc(Node *root, int &k, int &targetNode, int &ancestor){
+    if(!root || ancestor != -1) return -1;
+    if(root -> data == targetNode) return 1;
+    int hopsMade = max(utilFunc(root -> left, k, targetNode, ancestor), utilFunc(root -> right, k, targetNode, ancestor));
+    if (hopsMade == k) ancestor = root -> data;
+    return hopsMade != -1 ? hopsMade + 1 : -1;
+}
+
+int kthAncestor(Node *root, int k, int node)
+{
+    // Code here
+    int ancestor = -1;
+    int hopsMade = utilFunc(root, k, node, ancestor);
+    return ancestor;
+}
+
+Java Solution
+
+// { Driver Code Starts
+//Initial Template for Java
+
+import java.util.LinkedList; 
+import java.util.Queue; 
+import java.io.*;
+import java.util.*;
+
+class Node{
+    int data;
+    Node left;
+    Node right;
+    Node(int data){
+        this.data = data;
+        left=null;
+        right=null;
+    }
+}
+
+class GfG {
+    
+    static Node buildTree(String str){
+        
+        if(str.length()==0 || str.charAt(0)=='N'){
+            return null;
+        }
+        
+        String ip[] = str.split(" ");
+        // Create the root of the tree
+        Node root = new Node(Integer.parseInt(ip[0]));
+        // Push the root to the queue
+        
+        Queue<Node> queue = new LinkedList<>(); 
+        
+        queue.add(root);
+        // Starting from the second element
+        
+        int i = 1;
+        while(queue.size()>0 && i < ip.length) {
+            
+            // Get and remove the front of the queue
+            Node currNode = queue.peek();
+            queue.remove();
+                
+            // Get the current node's value from the string
+            String currVal = ip[i];
+                
+            // If the left child is not null
+            if(!currVal.equals("N")) {
+                    
+                // Create the left child for the current node
+                currNode.left = new Node(Integer.parseInt(currVal));
+                // Push it to the queue
+                queue.add(currNode.left);
+            }
+                
+            // For the right child
+            i++;
+            if(i >= ip.length)
+                break;
+                
+            currVal = ip[i];
+                
+            // If the right child is not null
+            if(!currVal.equals("N")) {
+                    
+                // Create the right child for the current node
+                currNode.right = new Node(Integer.parseInt(currVal));
+                    
+                // Push it to the queue
+                queue.add(currNode.right);
+            }
+            i++;
+        }
+        
+        return root;
+    }
+    static void printInorder(Node root)
+    {
+        if(root == null)
+            return;
+            
+        printInorder(root.left);
+        System.out.print(root.data+" ");
+        
+        printInorder(root.right);
+    }
+    
+	public static void main (String[] args) throws IOException{
+	        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	        
+	        int t=Integer.parseInt(br.readLine());
+    
+	        while(t > 0){
+	            String arr[] = br.readLine().split(" ");
+	            int k = Integer.parseInt(arr[0]);
+	            int node = Integer.parseInt(arr[1]);
+	            String s = br.readLine();
+    	    	Node root = buildTree(s);
+    	    	
+                Tree g = new Tree();
+        		System.out.println(g.kthAncestor(root,k,node));
+                    t--;
+            
+        }
+    }
+}// } Driver Code Ends
+
+
+//User function Template for Java
+
+/*
+Structure of Node class is:
+
+class Node {
+    int data;
+    Node left, right;
+    
+    public Node(int data){
+        this.data = data;
+    }
+}
+*/
+
+class Var{
+    int val;
+    Var(int i){
+        val = i;
+    }
+}
+
+class Tree
+{
+    public int utilFunc(Node root, int k, int targetNode, Var ancestor){
+        if(root == null || ancestor.val != -1) return -1;
+        if(root.data == targetNode) return 1;
+        int hopsMade = Math.max(utilFunc(root.left, k, targetNode, ancestor),
+                        utilFunc(root.right, k, targetNode, ancestor));
+        if(hopsMade == k) ancestor.val = root.data;
+        return hopsMade != -1 ? hopsMade + 1 : -1;
+    }
+    
+    public int kthAncestor(Node root, int k, int node)
+    {
+        //Write your code here
+        Var ancestor = new Var(-1);
+        int hopsMade = utilFunc(root, k, node, ancestor);
+        return ancestor.val;
+    }
+}
