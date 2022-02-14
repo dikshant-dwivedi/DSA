@@ -1,0 +1,308 @@
+C++ Solution
+
+// { Driver Code Starts
+//Initial Template for C++
+
+#include<bits/stdc++.h> 
+using namespace std; 
+
+// Tree Node
+struct Node
+{
+    int data;
+    Node* left;
+    Node* right;
+};
+
+// Utility function to create a new Tree Node
+Node* newNode(int val)
+{
+    Node* temp = new Node;
+    temp->data = val;
+    temp->left = NULL;
+    temp->right = NULL;
+    
+    return temp;
+}
+
+// Function to Build Tree
+Node* buildTree(string str)
+{   
+    // Corner Case
+    if(str.length() == 0 || str[0] == 'N')
+            return NULL;
+    
+    // Creating vector of strings from input 
+    // string after spliting by space
+    vector<string> ip;
+    
+    istringstream iss(str);
+    for(string str; iss >> str; )
+        ip.push_back(str);
+        
+    // Create the root of the tree
+    Node* root = newNode(stoi(ip[0]));
+        
+    // Push the root to the queue
+    queue<Node*> queue;
+    queue.push(root);
+        
+    // Starting from the second element
+    int i = 1;
+    while(!queue.empty() && i < ip.size()) {
+            
+        // Get and remove the front of the queue
+        Node* currNode = queue.front();
+        queue.pop();
+            
+        // Get the current node's value from the string
+        string currVal = ip[i];
+            
+        // If the left child is not null
+        if(currVal != "N") {
+                
+            // Create the left child for the current node
+            currNode->left = newNode(stoi(currVal));
+                
+            // Push it to the queue
+            queue.push(currNode->left);
+        }
+            
+        // For the right child
+        i++;
+        if(i >= ip.size())
+            break;
+        currVal = ip[i];
+            
+        // If the right child is not null
+        if(currVal != "N") {
+                
+            // Create the right child for the current node
+            currNode->right = newNode(stoi(currVal));
+                
+            // Push it to the queue
+            queue.push(currNode->right);
+        }
+        i++;
+    }
+    
+    return root;
+}
+
+
+ // } Driver Code Ends
+//User function Template for C++
+
+//Node Structure
+/*
+struct Node
+{
+    int data;
+    Node* left;
+    Node* right;
+};
+*/
+
+class Solution{
+  public:
+    //Function to return the maximum sum of non-adjacent nodes.
+    int getMaxSumOfGrandchildren(Node *root, unordered_map<Node*, int> &mp){
+        int sum = 0;
+        if(root -> left){
+            sum += maxSumUtil(root -> left -> left, mp) + maxSumUtil(root -> left -> right, mp);
+        }
+        if(root -> right){
+            sum += maxSumUtil(root -> right -> left, mp) + maxSumUtil(root -> right -> right, mp);
+        }
+        return sum;
+    }
+    
+    int maxSumUtil(Node *root, unordered_map<Node*, int> &mp){
+        if(!root) { return 0; }
+        
+        if(mp.find(root) != mp.end()){ return mp[root]; }
+        
+        int incl = root -> data + getMaxSumOfGrandchildren(root, mp);
+        
+        int excl = maxSumUtil(root -> left, mp) + maxSumUtil(root -> right, mp);
+        
+        return mp[root] = max(incl, excl);
+    }
+    
+    int getMaxSum(Node *root) 
+    {
+        // Add your code here
+        unordered_map<Node*, int> mp;
+        return maxSumUtil(root, mp);
+    }
+};
+
+// { Driver Code Starts.
+
+// Driver code 
+int main()
+{
+  int t;
+  scanf("%d ",&t);
+  while (t--)
+  {
+        string s;
+		getline(cin,s);
+		Node* root = buildTree(s);
+		Solution ob;
+        cout<<ob.getMaxSum(root)<<endl;
+  }
+  return 0;
+}  // } Driver Code Ends
+
+Java Solution
+
+
+// { Driver Code Starts
+//Initial Template for Java
+
+//Initial Template for Java
+
+import java.util.*;
+import java.io.*;
+import java.lang.*;
+
+class Node
+{
+    int data;
+    Node left, right;
+    
+    Node(int data)
+    {
+        this.data = data;
+        left = null;
+        right = null;
+    }
+}
+
+class MaxSum
+{
+    static Node buildTree(String str){
+        
+        if(str.length()==0 || str.charAt(0)=='N'){
+            return null;
+        }
+        
+        String ip[] = str.split(" ");
+        // Create the root of the tree
+        Node root = new Node(Integer.parseInt(ip[0]));
+        // Push the root to the queue
+        
+        Queue<Node> queue = new LinkedList<>(); 
+        
+        queue.add(root);
+        // Starting from the second element
+        
+        int i = 1;
+        while(queue.size()>0 && i < ip.length) {
+            
+            // Get and remove the front of the queue
+            Node currNode = queue.peek();
+            queue.remove();
+                
+            // Get the current node's value from the string
+            String currVal = ip[i];
+                
+            // If the left child is not null
+            if(!currVal.equals("N")) {
+                    
+                // Create the left child for the current node
+                currNode.left = new Node(Integer.parseInt(currVal));
+                // Push it to the queue
+                queue.add(currNode.left);
+            }
+                
+            // For the right child
+            i++;
+            if(i >= ip.length)
+                break;
+                
+            currVal = ip[i];
+                
+            // If the right child is not null
+            if(!currVal.equals("N")) {
+                    
+                // Create the right child for the current node
+                currNode.right = new Node(Integer.parseInt(currVal));
+                    
+                // Push it to the queue
+                queue.add(currNode.right);
+            }
+            i++;
+        }
+        
+        return root;
+    }
+    
+    public static void main(String args[])throws IOException
+    {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	        
+	        int t=Integer.parseInt(br.readLine());
+    
+	        while(t > 0){
+	            String s = br.readLine();
+    	    	Node root = buildTree(s);
+        	    Solution ob = new Solution();
+			    int ans = ob.getMaxSum(root);
+			    System.out.println(ans);
+                t--;
+	        }
+    }
+}
+
+
+
+// } Driver Code Ends
+
+
+//User function Template for Java
+/*class Node
+{
+    int data;
+    Node left, right;
+    
+    Node(int data)
+    {
+        this.data = data;
+        this.left = null;
+        this.right = null;
+    }
+}*/
+
+class Solution
+{
+    //Function to return the maximum sum of non-adjacent nodes.
+    
+    static int getSumGrandChildren(Node root, HashMap<Node, Integer> mp){
+        int sum = 0;
+        if(root.left != null){
+            sum += maxSumUtil(root.left.left, mp) + maxSumUtil(root.left.right, mp);
+        }
+        if(root.right != null){
+            sum += maxSumUtil(root.right.left, mp) + maxSumUtil(root.right.right, mp);
+        }
+        return sum;
+    }
+    
+    static int maxSumUtil(Node root, HashMap<Node, Integer> mp){
+        if(root == null){ return 0; }
+        if(mp.containsKey(root)) { return mp.get(root); }
+        int incl = root.data + getSumGrandChildren(root, mp);
+        int excl = maxSumUtil(root.left, mp) + maxSumUtil(root.right, mp);
+        mp.put(root, Math.max(incl, excl));
+        return Math.max(incl, excl);
+    }
+    
+    static int getMaxSum(Node root)
+    {
+        // add your code here
+        HashMap<Node, Integer> mp = new HashMap<>();
+        return maxSumUtil(root, mp);
+    }
+}
