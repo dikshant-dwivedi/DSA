@@ -32,7 +32,7 @@ public class Main
             return 0;
         }
         int sum = root.data + utilFunc(root.left, maxSum) + utilFunc(root.right, maxSum);
-        maxSum = Math.max(sum, maxSum);
+        maxSum.s = Math.max(sum, maxSum.s);
         return sum;
     }
     
