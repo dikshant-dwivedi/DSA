@@ -1,0 +1,88 @@
+C++ Solution
+
+class Solution {
+public:
+    
+    int minDiff = INT_MAX;
+    //unordered_set<int> set1, set2;
+    vector<int> set1, set2;
+    string res = "";
+    
+    //soset1 = sum of set 1, soset2 = sum of set 2
+    void backtrack(int i, vector<int> &nums, int soset1, int soset2){
+        if(i == nums.size()){
+            if(abs(soset1 - soset2) < minDiff){
+                minDiff = abs(soset1 - soset2);
+                for(auto i: set1){
+                    res += to_string(i) + " ";
+                }
+                res += "& ";
+                for(auto i: set2){
+                    res += to_string(i) + " ";
+                }
+            }
+        }
+        else{
+            if(set1.size() < (nums.size() + 1)/2){
+                set1.push_back(nums[i]);
+                backtrack(i+1, nums, soset1 + nums[i], soset2);
+                set1.pop_back();
+            }
+            if(set2.size() < (nums.size() + 1)/2){
+                set2.push_back(nums[i]);
+                backtrack(i+1, nums, soset1, soset2 + nums[i]);
+                set2.pop_back();
+            }
+        }
+    }
+    
+    int minimumDifference(vector<int>& nums) {
+        backtrack(0, nums, 0, 0);
+        cout << res;
+        return minDiff;
+    }
+};
+
+Java Solution
+
+class Solution {
+    
+    ArrayList<Integer> set1, set2;
+    int minDiff = Integer.MAX_VALUE;
+    String res = "";
+    
+    void backtrack(int i, int [] nums, int soset1, int soset2){
+        if(i == nums.length){
+            if(minDiff > Math.abs(soset1 - soset2)){
+                minDiff = Math.abs(soset1 - soset2);
+                for(Integer m : set1){
+                    res += m + " ";
+                }
+                res += "& ";
+                for(Integer m : set2){
+                    res += m + " ";
+                }
+            }
+        }
+        else{
+            if(set1.size() < (nums.length + 1)/2){
+                set1.add(nums[i]);
+                backtrack(i+1, nums, soset1 + nums[i], soset2);
+                set1.remove(set1.size() - 1);
+            }
+            if(set2.size() < (nums.length + 1)/2){
+                set2.add(nums[i]);
+                backtrack(i+1, nums, soset1, soset2 + nums[i]);
+                set2.remove(set2.size() - 1);
+            }
+        }
+    }
+    
+    public int minimumDifference(int[] nums) {
+        set1 = new ArrayList<Integer>();
+        set2 = new ArrayList<Integer>();
+        backtrack(0, nums, 0, 0);
+        System.out.print(res);
+        return minDiff;
+    }
+}
