@@ -1,0 +1,143 @@
+C++ Solution
+
+// { Driver Code Starts
+// Initial Template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+// User function Template for C++
+
+class Solution{
+public:
+
+    void wordBreakUtil(string sentence, string possSentence, unordered_set<string> &set, vector<string> &res){
+        if(sentence == ""){
+            possSentence.pop_back();
+            res.push_back(possSentence);
+        }
+        else{
+            for(int i = 1; i <= sentence.length(); i++){
+                string left = sentence.substr(0, i);
+                if(set.find(left) != set.end()){
+                    string right = sentence.substr(i);
+                    wordBreakUtil(right, possSentence + left + " ", set, res);
+                }
+            }
+        }
+    }
+    
+    vector<string> wordBreak(int n, vector<string>& dict, string s)
+    {
+        unordered_set<string> set;
+        for(string i : dict){
+            set.insert(i);
+        }
+        
+        vector<string> res;
+        wordBreakUtil(s, "", set, res);
+        return res;
+    }
+};
+
+// { Driver Code Starts.
+
+int main(){
+    int t;
+    cin>>t;
+    while(t--){
+        int n;
+        vector<string> dict;
+        string s;
+        cin>>n;
+        for(int i = 0;i < n;i++){
+            cin>>s;
+            dict.push_back(s);
+        }
+        cin>>s;
+        
+        Solution ob;
+        vector<string> ans = ob.wordBreak(n, dict, s);
+        if(ans.size() == 0)
+            cout<<"Empty\n";
+        else{
+            sort(ans.begin(), ans.end());
+            for(int i = 0;i < ans.size();i++)
+                cout<<"("<<ans[i]<<")";
+            cout<<endl;
+        }
+    }
+    return 0;
+}  // } Driver Code Ends
+
+Java Solution
+
+// { Driver Code Starts
+//Initial Template for Java
+
+import java.io.*;
+import java.util.*;
+import java.util.stream.*;
+
+class GFG{
+    public static void main(String args[])throws IOException
+    {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(in.readLine());
+        while(t-- > 0){
+            int n = Integer.parseInt(in.readLine());
+            String arr[] = in.readLine().trim().split("\\s+");
+            List<String> dict = new ArrayList<String>();
+            for(int i = 0;i < n;i++)
+                dict.add(arr[i]);
+            String s = in.readLine();
+            
+            Solution ob = new Solution();
+            List<String> ans = new ArrayList<String>();
+            ans = ob.wordBreak(n, dict, s);
+            if(ans.size() == 0)
+                System.out.println("Empty");
+            else{
+                List<String> sol = ans.stream().sorted().collect(Collectors.toList());
+                for(int i = 0;i < sol.size();i++)
+                    System.out.print("("+sol.get(i)+")");
+                System.out.println();
+            }
+        }
+    }
+}// } Driver Code Ends
+
+
+//User function Template for Java
+
+class Solution{
+    
+    static void wordBreakUtil(String sentence, String possSentence, HashSet<String> set, List<String> res){
+        if(sentence.length() == 0){
+            res.add(possSentence.substring(0, possSentence.length() - 1));
+        }
+        else{
+            for(int i = 1; i <= sentence.length(); i++){
+                String left = sentence.substring(0, i);
+                if(set.contains(left)){
+                    String right = sentence.substring(i);
+                    wordBreakUtil(right, possSentence + left + " ", set, res);
+                }
+            }   
+        }
+    }
+    
+    static List<String> wordBreak(int n, List<String> dict, String s)
+    {
+        // code here
+        HashSet<String> set = new HashSet<String>();
+        for(String i : dict){
+            set.add(i);
+        }
+        
+        List<String> res = new ArrayList<String>();
+        wordBreakUtil(s, "", set, res);
+        return res;
+    }
+}
