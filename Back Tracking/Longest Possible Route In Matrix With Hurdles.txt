@@ -1,0 +1,121 @@
+NOTE : QUESTION WAS AVAILABLE IN CODING NINJAS STUDIOS
+C++ Solution
+
+#include<bits/stdc++.h>
+using namespace std;
+
+
+int dr[] = {0, 1, 0, -1};
+int dc[] = {1, 0, -1, 0};
+vector<vector<int>> visited;
+int res;
+
+class Pair{
+    public:
+    	int r, c;
+    	Pair(int _r, int _c){
+            r = _r;
+            c = _c;
+        }
+};
+
+int isPossible(vector<vector<int>> &mat, int i, int j){
+    if(i < mat.size() && j < mat[0].size() && i >= 0 && j >= 0 && mat[i][j] != 0 && visited[i][j] != 1){
+        return true;
+    }
+    return false;
+}
+
+void backtrack(vector<vector<int>> &mat, Pair src, Pair dest, int currPath){
+    if(src.r == dest.r && src.c == dest.c){
+        res = max(currPath, res);
+    }
+    else{
+        int newR, newC;
+        visited[src.r][src.c] = 1;
+        for(int i = 0; i < 4; i++){
+            newR = src.r + dr[i], newC = src.c + dc[i];
+            if(isPossible(mat, newR, newC)){
+                Pair newSrc(newR, newC);
+                backtrack(mat, newSrc, dest, currPath + 1);
+            }
+        }
+        visited[src.r][src.c] = 0;
+    }
+}
+
+int longestPath(int n, int m, vector<vector<int>> &mat, int sx, int sy, int dx, int dy) {
+	// Write your code here
+    visited.resize(n, vector<int> (m, 0));
+    res = -1;
+    Pair src(sx, sy), dest(dx, dy);
+    if(isPossible(mat, sx, sy))
+    	backtrack(mat, src, dest, 0);
+    return res;
+}
+
+int main(){
+    int N, M;
+    cin >> N >> M;
+    vector<vector<int>> mat(N, vector<int>(M));
+    for(int i = 0; i < N; i++){
+        for(int j = 0; j < M; j++){
+            cin >> mat[i][j];
+        }
+    }
+    int sx, sy, dx, dy;
+    cin >> sx >> sy >> dx >> dy;
+    cout << longestPath(N, M, mat, sx, sy, dx, dy);
+}
+
+Java Solution (PARTIALLY ACCEPTED 90%)
+
+class Pair{
+    int r, c;
+    Pair(int _r, int _c){
+        r = _r;
+        c = _c;
+    }
+}
+
+public class Solution {
+ 
+    static int dr[] = {0, 0, -1, 1};
+    static int dc[] = {1, -1, 0, 0};
+    static boolean[][] visited;
+    static int res;
+    
+    public static boolean isPossible(int mat[][], int i, int j){
+        if(i >= 0 && i < mat.length && j >= 0 && j < mat[0].length && mat[i][j] == 1 && !visited[i][j]){
+            return true;
+        }
+        return false;
+    }
+    
+    public static void backtrack(int mat[][], Pair src, Pair dest, int currPath){
+        if(src.r == dest.r && src.c == dest.c){
+            res = Math.max(res, currPath);
+        }
+        else{
+            visited[src.r][src.c] = true;
+            int newR, newC;
+            for(int i = 0; i < 4; i++){
+                newR = src.r + dr[i];
+                newC = src.c + dc[i];
+                if(isPossible(mat, newR, newC)){
+                    backtrack(mat, new Pair(newR, newC), dest, currPath + 1);
+                }
+            }
+            visited[src.r][src.c] = false;
+        }
+    }
+    
+    public static int longestPath(int n, int m, int[][] mat, int sx, int sy, int dx, int dy) {
+        // Write your code here
+        visited = new boolean[n][m];
+        res = -1;
+        if(isPossible(mat, sx, sy))
+        	backtrack(mat, new Pair(sx, sy), new Pair(dx, dy), 0);
+        return res;
+    }
+}
