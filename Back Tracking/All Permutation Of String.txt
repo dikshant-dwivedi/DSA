@@ -1,0 +1,118 @@
+C++ Solution
+
+// { Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+class Solution
+{
+	public:
+	
+	    void backtrack(string per, string s, vector<string> &res){
+	        if(s.length() == 1){
+	            res.push_back(per + s);
+	        }
+	        else{
+	            string modStr, c;
+	            for(int i = 0; i < s.length(); i++){
+	                c = s[i];
+	                modStr = s.substr(0, i) + s.substr(i + 1);
+	                backtrack(per + c, modStr, res);
+	            }
+	        }
+	    }
+	    
+		vector<string>find_permutation(string s)
+		{
+		    // Code here there
+		    sort(s.begin(), s.end());
+		    vector<string> res;
+		    backtrack("", s, res);
+		    
+		    return res;
+		}
+};
+
+
+
+// { Driver Code Starts.
+int main(){
+    int t;
+    cin >> t;
+    while(t--)
+    {
+	    string S;
+	    cin >> S;
+	    Solution ob;
+	    vector<string> ans = ob.find_permutation(S);
+	    for(auto i: ans)
+	    {
+	    	cout<<i<<" ";
+	    }
+	    cout<<"\n";
+    }
+	return 0;
+}
+  // } Driver Code Ends
+
+
+Java Solution
+
+// { Driver Code Starts
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+class GFG
+{
+	public static void main(String[] args) throws IOException
+	{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(br.readLine().trim());
+        while(t-->0)
+        {
+            String S = br.readLine().trim();
+            Solution obj = new Solution();
+            List<String> ans = obj.find_permutation(S);
+            for( int i = 0; i < ans.size(); i++)
+            {
+                System.out.print(ans.get(i)+" ");
+            }
+            System.out.println();
+                        
+        }
+	}
+}
+
+// } Driver Code Ends
+
+
+class Solution {
+    
+    public void backtrack(String per, String s, List<String> res){
+        if(s.length() == 1){
+            res.add(new String(per + s));
+        }
+        else{
+            String modStr, c;
+            for(int i = 0; i < s.length(); i++){
+                c = s.charAt(i) + "";
+                modStr = s.substring(0, i) + s.substring(i + 1);
+                backtrack(per + c, modStr, res);
+            }
+        }
+    }
+    
+    public List<String> find_permutation(String s) {
+        // Code here
+        char[] s_array = s.toCharArray();
+        Arrays.sort(s_array);
+        s = new String(s_array);
+        
+        List<String> res = new ArrayList<String>();
+    
+        backtrack("", s, res);
+        
+        return res;
+    }
+}
