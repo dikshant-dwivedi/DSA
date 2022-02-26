@@ -1,0 +1,164 @@
+C++ Solution
+
+// { Driver Code Starts
+// Initial Template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+// User function Template for C++
+
+class Solution{
+public:
+
+    vector<int> upperDiagonal, lowerDiagonal, leftRow;
+    
+    void markQueensTerritory(int row, int col, int i, int n){
+        lowerDiagonal[row + col] = i;
+        upperDiagonal[n-1 + col - row] = i;
+        leftRow[row] = i;
+    }
+    
+    void backtrack(int col, int n, vector<int> &currPos, vector<vector<int>> &res){
+        if(col == n){
+            res.push_back(currPos);
+            return;
+        }
+        
+        for(int row = 0; row < n; row++){
+            if(!leftRow[row] && !lowerDiagonal[row + col] && !upperDiagonal[n - 1 + (col - row)]){
+                
+                markQueensTerritory(row, col, 1, n);
+                currPos[col] = row + 1;
+                
+                backtrack(col + 1, n, currPos, res);
+                
+                markQueensTerritory(row, col, 0, n);
+                currPos[col] = -1;
+                
+            }
+        }
+    }
+    
+    vector<vector<int>> nQueen(int n) {
+        
+        //result vectors
+        vector<int> currPos(n, -1);
+        vector<vector<int>> res;
+        
+        upperDiagonal.resize(2 * n - 1, 0);
+        lowerDiagonal.resize(2 * n - 1, 0);
+        leftRow.resize(n, 0);
+        
+        backtrack(0, n, currPos, res);
+        return res;
+        
+    }
+};
+
+// { Driver Code Starts.
+
+int main(){
+    int t;
+    cin>>t;
+    while(t--){
+        int n;
+        cin>>n;
+        
+        Solution ob;
+        vector<vector<int>> ans = ob.nQueen(n);
+        if(ans.size() == 0)
+            cout<<-1<<"\n";
+        else {
+            for(int i = 0;i < ans.size();i++){
+                cout<<"[";
+                for(int u: ans[i])
+                    cout<<u<<" ";
+                cout<<"] ";
+            }
+            cout<<endl;
+        }
+    }
+    return 0;
+}  // } Driver Code Ends
+
+Java Solution
+
+// { Driver Code Starts
+// Initial Template for Java
+
+import java.io.*;
+import java.util.*;
+import java.lang.*;
+
+class GFG{
+    public static void main(String args[])throws IOException
+    {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(in.readLine());
+        while(t-- > 0) {
+            int n = Integer.parseInt(in.readLine());
+            
+            Solution ob = new Solution();
+            ArrayList<ArrayList<Integer>> ans = ob.nQueen(n);
+            if(ans.size() == 0)
+                System.out.println("-1");
+            else {
+                for(int i = 0;i < ans.size();i++){
+                    System.out.print("[");
+                    for(int j = 0;j < ans.get(i).size();j++)
+                        System.out.print(ans.get(i).get(j) + " ");
+                    System.out.print("] ");
+                }
+                System.out.println();
+            }
+        }
+    }
+}// } Driver Code Ends
+
+
+// User function Template for Java
+
+class Solution{
+    
+    static boolean[] upperDiagonal, lowerDiagonal, leftRow;
+    
+    static void markQueensTerritory(int row, int col, int n, boolean i){
+        upperDiagonal[row + col] = i;
+        lowerDiagonal[n-1 + col-row] = i;
+        leftRow[row] = i;
+    }
+    
+    static void backtrack(int col, int n,
+    ArrayList<Integer> currPos, ArrayList<ArrayList<Integer>> res){
+        
+        if(col == n){
+            res.add(new ArrayList(currPos));
+            return;
+        }
+        
+        for(int row = 0; row < n; row++){
+            if(!leftRow[row] && !upperDiagonal[row + col] && !lowerDiagonal[n-1 + col-row]){
+                markQueensTerritory(row, col, n, true);
+                currPos.add(row + 1);
+                backtrack(col + 1, n, currPos, res);
+                markQueensTerritory(row, col, n, false);
+                currPos.remove(currPos.size()-1);
+            }
+        }
+    }
+    
+    static ArrayList<ArrayList<Integer>> nQueen(int n) {
+        // code here
+        upperDiagonal = new boolean[2*n - 1];
+        lowerDiagonal = new boolean[2*n - 1];
+        leftRow = new boolean[n];
+        
+        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+        ArrayList<Integer> currPos = new ArrayList<Integer>();
+        
+        backtrack(0, n, currPos, res);
+        return res;
+    }
+}
