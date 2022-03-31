@@ -1,0 +1,160 @@
+C++ Solution
+
+// { Driver Code Starts
+// Initial template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+ // } Driver Code Ends
+// User function template for C++
+
+class Solution{
+    public:
+    
+    int dr[4] = {1, 0, 0, -1};
+    int dc[4] = {0, -1, 1, 0};
+    vector<string> res;
+    vector<vector<int>> visited = vector<vector<int>>(5, vector<int>(5, 0));
+    
+    int isSafe(int r, int c, vector<vector<int>> &maze){
+        int n = maze.size();
+        if(r >= 0 && r < n && c >= 0 && c < n) return true;
+        return false;
+    }
+    
+    void getAllPaths(int r, int c, vector<vector<int>> &maze, int n, string currPath){
+        visited[r][c] = 1;
+        if(r == n-1 && c == n-1){
+            res.push_back(currPath);
+        }
+        else{
+            string dir = "DLRU";
+            int newR, newC;
+            for(int i = 0; i < 4; i++){
+                newR = r + dr[i], newC = c + dc[i];
+                if(isSafe(newR, newC, maze) && !visited[newR][newC] && maze[newR][newC]){
+                    getAllPaths(newR, newC, maze, n, currPath + dir[i]);
+                }
+            }
+        }
+        visited[r][c] = 0;
+    }
+    
+    vector<string> findPath(vector<vector<int>> &maze, int n) {
+        // Your code goes here
+        if(maze[0][0]) getAllPaths(0, 0, maze, n, "");
+        return res;
+    }
+};
+
+    
+
+
+// { Driver Code Starts.
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n;
+        cin >> n;
+        vector<vector<int>> m(n, vector<int> (n,0));
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                cin >> m[i][j];
+            }
+        }
+        Solution obj;
+        vector<string> result = obj.findPath(m, n);
+        sort(result.begin(), result.end());
+        if (result.size() == 0)
+            cout << -1;
+        else
+            for (int i = 0; i < result.size(); i++) cout << result[i] << " ";
+        cout << endl;
+    }
+    return 0;
+}  // } Driver Code Ends
+
+Java Solution
+
+// { Driver Code Starts
+// Initial Template for Java
+
+import java.util.*;
+class Rat {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+
+        while (t-- > 0) {
+            int n = sc.nextInt();
+            int[][] a = new int[n][n];
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++) a[i][j] = sc.nextInt();
+
+            Solution obj = new Solution();
+            ArrayList<String> res = obj.findPath(a, n);
+            Collections.sort(res);
+            if (res.size() > 0) {
+                for (int i = 0; i < res.size(); i++)
+                    System.out.print(res.get(i) + " ");
+                System.out.println();
+            } else {
+                System.out.println(-1);
+            }
+        }
+    }
+}
+// } Driver Code Ends
+
+
+// User function Template for Java
+
+// m is the given matrix and n is the order of matrix
+class Solution {
+    
+    static int dr[] = {1, 0, 0, -1};
+    static int dc[] = {0, -1, 1, 0};
+    static String dir = "DLRU";
+    static ArrayList<String> res;
+    static int visited[][] = new int[5][5];
+    
+    static boolean isSafe(int r, int c, int[][] maze){
+        int n = maze.length;
+        if(r >= 0 && r < n && c >= 0 && c < n) return true;
+        return false;
+    }
+    
+    public static void getAllPaths(int r, int c, int[][] maze, int n, String currPath){
+        visited[r][c] = 1;
+        if(r == n-1 && c == n-1){
+            res.add(new String(currPath));
+        }
+        else{
+            int newR, newC;
+            String newPath;
+            for(int i = 0; i < 4; i++){
+                newR = r + dr[i];
+                newC = c + dc[i];
+                if(isSafe(newR, newC, maze) && visited[newR][newC] != 1 && maze[newR][newC] == 1){
+                    newPath = currPath + dir.charAt(i);
+                    getAllPaths(newR, newC, maze, n, newPath);
+                }
+            }
+        }
+        visited[r][c] = 0;
+    }
+    
+    public static ArrayList<String> findPath(int[][] maze, int n) {
+        // Your code here
+        for(int[] i : visited){
+            Arrays.fill(i, 0);
+        }
+        res = new ArrayList<String>();
+        if(maze[0][0] == 1) getAllPaths(0, 0, maze, n, "");
+        return res;
+    }
+}
