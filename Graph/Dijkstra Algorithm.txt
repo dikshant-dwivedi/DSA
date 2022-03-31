@@ -1,0 +1,197 @@
+C++ Solution
+
+// { Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+class Solution
+{
+	public:
+	//Function to find the shortest distance of all the vertices
+    //from the source vertex S.
+    
+    struct compareWeight{
+        bool operator()(pair<int, int> &p1, pair<int, int> &p2){
+            return p1.second > p2.second;
+        }
+    };
+
+    vector <int> dijkstra(int V, vector<vector<int>> adj[], int src)
+    {
+        //shape of the input is (V, n, 2)
+        //for each vertex, we have a 2d array of n * 2, where n is the number
+        //of neighbours the vertex has. 2 has one having the neighbour node
+        //and the distance of the neighbour node from the curr vertex
+        int INF = INT_MAX;
+        vector<int> dist(V, INT_MAX);
+        priority_queue<pair<int, int>, vector<pair<int, int>>, compareWeight> q;
+        
+        dist[src] = 0;
+        q.push({src, 0});
+        
+        int prev, currDist, neighbour, weight;
+        while(!q.empty()){
+            prev = q.top().first;
+            currDist = q.top().second;
+            q.pop();
+            for(auto nbr_with_weight : adj[prev]){
+                neighbour = nbr_with_weight[0], weight = nbr_with_weight[1];
+                if(weight + currDist < dist[neighbour]){
+                    dist[neighbour] = weight + currDist;
+                    q.push({neighbour, dist[neighbour]});
+                }
+            }
+        }
+        return dist;
+    }
+};
+
+
+// { Driver Code Starts.
+
+
+int main()
+{
+    int t;
+    cin >> t;
+    while (t--) {
+        int V, E;
+        cin >> V >> E;
+        vector<vector<int>> adj[V];
+        int i=0;
+        while (i++<E) {
+            int u, v, w;
+            cin >> u >> v >> w;
+            vector<int> t1,t2;
+            t1.push_back(v);
+            t1.push_back(w);
+            adj[u].push_back(t1);
+            t2.push_back(u);
+            t2.push_back(w);
+            adj[v].push_back(t2);
+        }
+        int S;
+        cin>>S;
+        
+        Solution obj;
+    	vector<int> res = obj.dijkstra(V, adj, S);
+    	
+    	for(int i=0; i<V; i++)
+    	    cout<<res[i]<<" ";
+    	cout<<endl;
+    }
+
+    return 0;
+}
+
+  // } Driver Code Ends
+
+Java Solution
+
+// { Driver Code Starts
+import java.util.*;
+import java.io.*;
+import java.lang.*;
+
+class DriverClass
+{
+    public static void main(String args[]) throws IOException {
+
+        BufferedReader read =
+            new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(read.readLine());
+        while (t-- > 0) {
+            String str[] = read.readLine().trim().split(" ");
+            int V = Integer.parseInt(str[0]);
+            int E = Integer.parseInt(str[1]);
+    
+            ArrayList<ArrayList<ArrayList<Integer>>> adj = new ArrayList<ArrayList<ArrayList<Integer>>>();
+            for(int i=0;i<V;i++)
+            {
+                adj.add(new ArrayList<ArrayList<Integer>>());
+            }
+            
+            int i=0;
+            while (i++<E) {
+                String S[] = read.readLine().trim().split(" ");
+                int u = Integer.parseInt(S[0]);
+                int v = Integer.parseInt(S[1]);
+                int w = Integer.parseInt(S[2]);
+                ArrayList<Integer> t1 = new ArrayList<Integer>();
+                ArrayList<Integer> t2 = new ArrayList<Integer>();
+                t1.add(v);
+                t1.add(w);
+                t2.add(u);
+                t2.add(w);
+                adj.get(u).add(t1);
+                adj.get(v).add(t2);
+            }
+            
+            int S = Integer.parseInt(read.readLine());
+            
+            Solution ob = new Solution();
+            
+            int[] ptr = ob.dijkstra(V, adj, S);
+            
+            for(i=0; i<V; i++)
+                System.out.print(ptr[i] + " ");
+            System.out.println();
+        }
+    }
+}// } Driver Code Ends
+
+
+//User function Template for Java
+
+class Node implements Comparator<Node>{
+    int val;
+    int weight;
+    
+    Node(int v, int w){
+        val = v;
+        weight = w;
+    }
+    
+    Node(){}
+    
+    @Override
+    public int compare(Node n1, Node n2){
+        return n1.weight - n2.weight;
+    }
+}
+
+class Solution
+{
+    //Function to find the shortest distance of all the vertices
+    //from the source vertex S.
+    static int[] dijkstra(int V, ArrayList<ArrayList<ArrayList<Integer>>> adj, int src)
+    {
+        //shape of the input is (V, n, 2)
+        //for each vertex, we have a 2d array of n * 2, where n is the number
+        //of neighbours the vertex has. 2 has one having the neighbour node
+        //and the distance of the neighbour node from the curr vertex
+        int INF = Integer.MAX_VALUE;
+        int dist[] = new int[V];
+        Arrays.fill(dist, INF);
+        PriorityQueue<Node> q = new PriorityQueue<Node>(V, new Node());
+        
+        dist[src] = 0;
+        q.add(new Node(src, 0));
+        
+        int neighbour, weight;
+        while(!q.isEmpty()){
+            Node n = q.poll();
+            for(ArrayList<Integer> nbr_with_weight : adj.get(n.val)){
+                neighbour = nbr_with_weight.get(0);
+                weight = nbr_with_weight.get(1);
+                if(weight + n.weight < dist[neighbour]){
+                    dist[neighbour] = weight + n.weight;
+                    q.add(new Node(neighbour, dist[neighbour]));
+                }
+            }
+        }
+        
+        return dist;
+    }
+}
