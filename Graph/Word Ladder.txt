@@ -1,0 +1,88 @@
+C++ Solution
+
+/**
+Note: while doing bfs I am getting a TLE, if I visited the node after I remove it from the queue
+but I do not get a TLE if I visit the node while I insert the node in the queue
+*/
+
+class Solution {
+public:
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        
+        unordered_set<string> wordSet(wordList.begin(), wordList.end()), visited;
+        queue<string> q;
+        
+        if(wordSet.find(endWord) == wordSet.end())
+            return 0;
+        
+        q.push(beginWord);
+        visited.insert(beginWord);
+        
+        int res = 0, size;
+        string currWord, newWord;
+        while(!q.empty()){
+            res++;
+            size = q.size();
+            for(int i = 0; i < size; i++){
+                currWord = q.front(); q.pop();
+                
+                if(currWord == endWord) return res;
+                
+                for(int j = 0; j < currWord.length(); j++){
+                    for(char k = 'a'; k <= 'z'; k++){
+                        
+                        newWord = currWord;
+                        newWord[j] = k;
+                        
+                        if(wordSet.count(newWord) and !visited.count(newWord)){
+                            q.push(newWord);
+                            visited.insert(newWord);
+                        }
+                        
+                    }
+                }
+            }
+        }
+        
+        return 0;
+    }
+};
+
+Java Solution
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        HashSet<String> wordSet = new HashSet<String>(wordList);
+        if(!wordSet.contains(endWord)) return 0;
+        
+        HashSet<String> visited = new HashSet<String>();
+        Queue<String> q = new LinkedList<String>();
+        
+        q.add(beginWord);
+        visited.add(beginWord);
+        
+        int res = 0, size;
+        String currWord, newWord;
+        char[] newWordArray;
+        while(!q.isEmpty()){
+            size = q.size();
+            res++;
+            while(size-- != 0){
+                currWord = q.poll();
+                if(currWord.equals(endWord)) return res;
+                for(int i = 0; i < currWord.length(); i++){
+                    for(char j = 'a'; j <= 'z'; j++){
+                        newWordArray = currWord.toCharArray();
+                        newWordArray[i] = j;
+                        newWord = new String(newWordArray);
+                        if(wordSet.contains(newWord) && !visited.contains(newWord)){
+                            q.add(newWord);
+                            visited.add(newWord);
+                        }
+                    }
+                }
+            }
+        }
+        
+        return 0;
+    }
+}
