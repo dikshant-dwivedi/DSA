@@ -1,0 +1,53 @@
+C++ Solution
+
+class Solution {
+public:
+    
+    int dr[4] = {0, 0, 1, -1};
+    int dc[4] = {1, -1, 0, 0};
+    
+    void dfs(vector<vector<int>> &image, int sr, int sc, int currColor, int newColor){
+        image[sr][sc] = newColor;
+        int r = image.size(), c = image[0].size();
+        int newR, newC;
+        for(int i = 0; i < 4; i++){
+            newR = sr + dr[i], newC = sc + dc[i];
+            if(newR >= 0 && newC >= 0 && newR < r && newC < c && image[newR][newC] == currColor){
+                dfs(image, newR, newC, currColor, newColor);
+            }
+        }
+    }
+    
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
+        if(image[sr][sc] == newColor) return image;
+        dfs(image, sr, sc, image[sr][sc], newColor);
+        return image;
+    }
+};
+
+Java Solution
+
+class Solution {
+    
+    int dr[] = {0, 0, 1, -1};
+    int dc[] = {1, -1, 0, 0};
+    
+    void dfs(int[][] image, int sr, int sc, int currColor, int newColor){
+        int r = image.length, c = image[0].length;
+        int newR, newC;
+        image[sr][sc] = newColor;
+        for(int i = 0; i < 4; i++){
+            newR = sr + dr[i];
+            newC = sc + dc[i]; 
+            if(newR >= 0 && newR < r && newC >= 0 && newC < c && image[newR][newC] == currColor){
+                dfs(image, newR, newC, currColor, newColor);
+            }        
+        }
+    }
+    
+    public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
+        if(image[sr][sc] == newColor) return image;
+        dfs(image, sr, sc, image[sr][sc], newColor);
+        return image;
+    }
+}
