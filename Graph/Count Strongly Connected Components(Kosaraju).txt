@@ -1,0 +1,209 @@
+C++ Solution
+
+// { Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+
+
+class Solution
+{
+	public:
+	
+	void topo_sort_dfs(int v, vector<int> adj[], stack<int> &st, vector<int> &visited){
+	    visited[v] = true;
+	    for(auto neighbor : adj[v]){
+	        if(!visited[neighbor]){
+	            topo_sort_dfs(neighbor, adj, st, visited);
+	        }
+	    }
+	    st.push(v);
+	}
+	
+	void dfs(int v, vector<int> transpose[], vector<int> &visited){
+	    visited[v] = true;
+	    for(auto neighbor: transpose[v]){
+	        if(!visited[neighbor])
+	            dfs(neighbor, transpose, visited);
+	    }
+	}
+	
+	//Function to find number of strongly connected components in the graph.
+    int kosaraju(int V, vector<int> adj[])
+    {
+        //code here
+        //step 1: do topoligical sort
+        //step 2: transpose the graph
+        //step 3: do dfs again using stack values;
+        
+        //step 1
+        stack<int> st;
+        vector<int> visited(V, 0);
+        
+        for(int i = 0; i < V; i++){
+            if(!visited[i])
+                topo_sort_dfs(i, adj, st, visited);
+        }
+        
+        //step 2
+        vector<int> transpose[V];
+        for(int i = 0; i < V; i++){
+            visited[i] = 0;
+            for(auto neighbor : adj[i]){
+                transpose[neighbor].push_back(i);
+            }
+        }
+        
+        //step 3
+        int u, res = 0;
+        while(!st.empty()){
+            u = st.top();
+            st.pop();
+            if(!visited[u]){
+                dfs(u, transpose, visited);
+                res++;
+            }
+        }
+        
+        return res;
+    }
+};
+ 
+// { Driver Code Starts.
+
+
+int main()
+{
+    
+    int t;
+    cin >> t;
+    while(t--)
+    {
+    	int V, E;
+    	cin >> V >> E;
+
+    	vector<int> adj[V];
+
+    	for(int i = 0; i < E; i++)
+    	{
+    		int u, v;
+    		cin >> u >> v;
+    		adj[u].push_back(v);
+    	}
+
+    	Solution obj;
+    	cout << obj.kosaraju(V, adj) << "\n";
+    }
+
+    return 0;
+}
+
+  // } Driver Code Ends
+
+Java Solution
+
+// { Driver Code Starts
+//Initial Template for Java
+
+import java.util.*;
+import java.io.*;
+import java.lang.*;
+
+class Gfg
+{
+    public static void main (String[] args)
+    {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        
+        while(t-- > 0)
+        {
+            // arraylist of arraylist to represent graph
+            ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+            
+            int V = Integer.parseInt(sc.next());
+            int E = Integer.parseInt(sc.next());
+            
+            for(int i =0; i < V; i++)
+                adj.add(i, new ArrayList<Integer>());
+                
+            for(int i = 1; i <= E; i++)
+            {    int u = Integer.parseInt(sc.next());
+                 int v = Integer.parseInt(sc.next());
+                 
+                 // adding directed edgese between 
+                 // vertex 'u' and 'v'
+                 adj.get(u).add(v);
+            }
+            
+            Solution ob = new Solution();
+            System.out.println(ob.kosaraju(V, adj));
+		}
+    }
+}
+// } Driver Code Ends
+
+
+//User function Template for Java
+
+
+class Solution
+{
+    
+    void topo_sort_dfs(int v, ArrayList<ArrayList<Integer>> adj, Stack<Integer> st, boolean visited[]){
+        visited[v] = true;
+        for(Integer neighbor : adj.get(v)){
+            if(!visited[neighbor]){
+                topo_sort_dfs(neighbor, adj, st, visited);
+            }
+        }
+        st.push(v);
+    }
+    
+    void dfs(int v, ArrayList<ArrayList<Integer>> transpose, boolean visited[]){
+        visited[v] = true;
+        for(Integer neighbor : transpose.get(v)){
+            if(!visited[neighbor])
+                dfs(neighbor, transpose, visited);
+        }
+    }
+    
+    //Function to find number of strongly connected components in the graph.
+    public int kosaraju(int V, ArrayList<ArrayList<Integer>> adj)
+    {
+        //code here
+        Stack<Integer> st = new Stack<Integer>();
+        boolean visited[] = new boolean[V];
+        Arrays.fill(visited, false);
+        
+        for(int i = 0; i < V; i++){
+            if(!visited[i]){
+                topo_sort_dfs(i, adj, st, visited);
+            }
+        }
+        
+        ArrayList<ArrayList<Integer>> transpose = new ArrayList<ArrayList<Integer>>();
+        for(int i = 0; i < V; i++){
+            visited[i] = false;
+            transpose.add(new ArrayList<Integer>());
+        }
+        
+        for(int i = 0; i < V; i++){
+            for(Integer neighbor : adj.get(i)){
+                transpose.get(neighbor).add(i);
+            }
+        }
+        
+        int u, res = 0;
+        while(!st.isEmpty()){
+            u = st.pop();
+            if(!visited[u]){
+                dfs(u, transpose, visited);
+                res++;
+            }
+        }
+        
+        return res;
+    }
+}
