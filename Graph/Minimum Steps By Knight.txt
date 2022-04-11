@@ -1,0 +1,179 @@
+C++ Solution
+
+// { Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+class Solution 
+{
+    public:
+    
+    int dr[8] = {-2, -1, 1, 2, 2, 1, -1, -2};
+    int dc[8] = {1, 2, 2, 1, -1, -2, -2, -1};
+    vector<vector<int>> visited;
+    
+    /**
+    2   2   2   2   2
+    2   1   1   1   2
+    2   1   0   1   2
+    2   1   1   1   2
+    2   2   2   2   2
+    */
+    
+    int isASafeMove(int r, int c, int n){
+        if(r >= 0 && r < n && c >= 0 && c < n) return true;
+        return false;
+    }
+    
+    //Function to find out minimum steps Knight needs to reach target position.
+	int minStepToReachTarget(vector<int>&KnightPos,vector<int>&TargetPos,int N)
+	{
+	    // Code here
+	    visited.resize(N, vector<int>(N, 0));
+	    queue<pair<int, int>> q;
+	    pair<int, int> start = {KnightPos[0] - 1, KnightPos[1] - 1}, 
+	    target = {TargetPos[0] - 1, TargetPos[1] - 1};
+	    
+	    q.push(start);
+	    visited[start.first][start.second] = 1;
+	    
+	    int steps = 0, size, r, c, newR, newC;
+	    
+	    while(!q.empty()){
+	        size = q.size();
+	        for(int move = 0; move < size; move++){
+	            if(q.front() == target){
+	                return steps;
+	            }
+	            r = q.front().first, c = q.front().second;
+	            
+	            q.pop();
+	            
+	            for(int i = 0; i < 8; i++){
+	                newR = r + dr[i], newC = c + dc[i];
+	                if(isASafeMove(newR, newC, N) && !visited[newR][newC]){
+	                    q.push({newR, newC});
+	                    visited[newR][newC] = 1;
+	                }
+	            }
+	        }
+	        steps++;
+	    }
+	    
+	    return -1;
+	}
+};
+
+// { Driver Code Starts.
+int main(){
+	int tc;
+	cin >> tc;
+	while(tc--){
+		vector<int>KnightPos(2);
+		vector<int>TargetPos(2);
+		int N;
+		cin >> N;
+		cin >> KnightPos[0] >> KnightPos[1];
+		cin >> TargetPos[0] >> TargetPos[1];
+		Solution obj;
+		int ans = obj.minStepToReachTarget(KnightPos, TargetPos, N);
+		cout << ans <<"\n";
+	}
+	return 0;
+}  // } Driver Code Ends
+
+Java Solution
+
+// { Driver Code Starts
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+class GFG
+{
+    public static void main(String[] args) throws IOException
+    {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine().trim());
+        while(T-->0)
+        {
+            int N = Integer.parseInt(br.readLine().trim());
+            String[] S1 = br.readLine().trim().split(" ");
+            String[] S2 = br.readLine().trim().split(" ");
+            int[] KnightPos = new int[2];
+            int[] TargetPos = new int[2];
+            for(int i = 0; i < 2; i++){
+                KnightPos[i] = Integer.parseInt(S1[i]);
+                TargetPos[i] = Integer.parseInt(S2[i]);
+            }
+            Solution obj = new Solution();
+            int ans = obj.minStepToReachTarget(KnightPos, TargetPos, N);
+            System.out.println(ans);
+       }
+    }
+}
+// } Driver Code Ends
+
+class Pair{
+    int r, c;
+    Pair(int _r, int _c){
+        r = _r;
+        c = _c;
+    }
+}
+
+class Solution
+{
+    int dr[] = {-2, -2, 2, 2, -1, -1, 1, 1};
+    int dc[] = {1, -1, 1, -1, 2, -2, 2, -2};
+    boolean[][] visited;
+    /**
+    33333
+    32223
+    32123
+    32223
+    33333
+    */
+    
+    boolean isSafe(int r, int c, int N){
+        if(r >= 0 && c >= 0 && r < N && c < N) return true;
+        return false;
+    }
+    
+    //Function to find out minimum steps Knight needs to reach target position.
+    public int minStepToReachTarget(int KnightPos[], int TargetPos[], int N)
+    {
+        // Code here
+        visited = new boolean[N][N];
+        for(boolean row[] : visited){
+            Arrays.fill(row, false);
+        }
+        
+        Queue<Pair> q = new LinkedList<Pair>();
+        Pair start = new Pair(KnightPos[0]-1, KnightPos[1] - 1);
+        Pair end = new Pair(TargetPos[0]-1, TargetPos[1] - 1);
+        
+        q.add(start);
+        visited[start.r][start.c] = true;
+        
+        int steps = 0, size, newR, newC;
+        Pair p;
+        while(!q.isEmpty()){
+            size = q.size();
+            while(size-- != 0){
+                p = q.poll();
+                if(p.r == end.r && p.c == end.c) return steps;
+                for(int k = 0; k < 8; k++){
+                    newR = p.r + dr[k];
+                    newC = p.c + dc[k];
+                    if(isSafe(newR, newC, N) && !visited[newR][newC]){
+                        visited[newR][newC] = true;
+                        q.add(new Pair(newR, newC));
+                    }
+                }
+            }
+            steps++;
+        }
+        return -1;
+    }
+}
