@@ -1,0 +1,175 @@
+C++ Solution
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int findRoot(vector<int> &set, int child){
+    int root = child;
+    /**
+    set[x] returns the parent of x. but we need to find
+    the root of the set x belongs to. root of the set is the
+    parent node that is identified by a negative value in our
+    set.
+    */
+    while(set[root] > 0) root = set[root];
+    
+    int parent;
+    while(root != child){
+        parent = set[child];
+        set[child] = root;
+        child = parent;
+    }
+    
+    return root;
+}
+
+void addEdgeToTree(vector<int> &set, int root_u, int root_v){
+    /**
+    for the root, set[root] denotes a negative number for identifying
+    it and the magnitude of the number which denotes the number of
+    elements in the set, also known as weight. while combining two sets
+    into one, to decide whether root_u or root_v should be the final
+    root, we can find which set has more elements and make its root
+    the root of the final set.
+    In other words, the root with bigger weight will be the final root.
+    since, set[root] is negative, more negative weight will be greater.
+    */
+    if(set[root_u] < set[root_v]){
+        set[root_u] = set[root_u] + set[root_v];
+        set[root_v] = root_u;
+    }
+    else{
+        set[root_v] = set[root_u] + set[root_v];
+        set[root_u] = root_v;
+    }
+}
+
+void kruskalMCST(vector<vector<int>> &edges, int V, int E){
+    vector<int> checked(E, 0), set(V, -1);
+    int res[V-1][3];
+    
+    int u, v, k, minEdge, i = 0;
+    while(i < V-1){
+        minEdge = INT_MAX;
+        for(int j = 0; j < E; j++){
+            if(!checked[j] && edges[j][2] < minEdge){
+                minEdge = edges[j][2], u = edges[j][0], v = edges[j][1];
+                k = j;
+            }
+        }
+        
+        int root_u = findRoot(set, u), root_v = findRoot(set, v);
+        if(root_u != root_v){
+            res[i][0] = u, res[i][1] = v, res[i][2] = minEdge;
+            addEdgeToTree(set, root_u, root_v);
+            i++;
+        }
+        
+        checked[k] = 1;
+    }
+    
+    for(i = 0; i < V-1; i++){
+        cout << min(res[i][0], res[i][1]) << " " << max(res[i][0], res[i][1]) << " " << res[i][2] << endl;
+    }
+}
+
+int main() {
+    // Write your code here
+    int V, E;
+    cin >> V >> E;
+    vector<vector<int>> edges(E, vector<int>(3));
+    int u, v, wt;
+    for(int i = 0; i < E; i++){
+        cin >> u >> v >> wt;
+        edges[i][0] = u, edges[i][1] = v, edges[i][2] = wt;
+    }
+    
+    kruskalMCST(edges, V, E);
+}
+
+Java Solution
+
+import java.util.*;
+
+public class Solution {
+
+    public static int findRoot(int set[], int child){
+        int root = child;
+        while(set[root] > 0) root = set[root];
+        
+        int parent;
+        while(root != child){
+            parent = set[child];
+            set[child] = root;
+            child = parent;
+        }
+        
+        return root;
+    }
+    
+    public static void addEdgeToTree(int set[], int root_u, int root_v){
+        if(set[root_u] < set[root_v]){
+            set[root_u] = set[root_u] + set[root_v];
+            set[root_v] = root_u;
+        }
+        else{
+            set[root_v] = set[root_u] + set[root_v];
+            set[root_u] = root_v;
+        }
+    }
+    
+    public static void kruskalMCST(int edges[][], int V, int E){
+        int checked[] = new int[E];
+        int set[] = new int[V];
+        Arrays.fill(checked, 0);
+        Arrays.fill(set, -1);
+        
+        int res[][] = new int[V-1][3];
+        int u = 0, v = 0, k = 0, minEdge, i = 0;
+        while(i < V-1){
+            minEdge = Integer.MAX_VALUE;
+            for(int j = 0; j < E; j++){
+                if(edges[j][2] < minEdge && checked[j] != 1){
+                    u = edges[j][0];
+                    v = edges[j][1];
+                    minEdge = edges[j][2];
+                    k = j;
+                }
+            }
+            
+            int root_u = findRoot(set, u), root_v = findRoot(set, v);
+            if(root_u != root_v){
+                res[i][0] = Math.min(u, v);
+                res[i][1] = Math.max(u, v);
+                res[i][2] = minEdge;
+                addEdgeToTree(set, root_u, root_v);
+                i++;
+            }
+            
+ 			checked[k] = 1;
+        }
+        
+        for(i = 0; i < V-1; i++){
+            System.out.println(res[i][0] + " " + res[i][1] + " " + res[i][2]);
+        }
+    }
+    
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int V = sc.nextInt();
+		int E = sc.nextInt();
+
+		/* Write Your Code Here
+		 * Complete the Rest of the Program
+		 * You have to take input and print the output yourself
+		 */
+        int edges[][] = new int[E][3];
+        for(int i = 0; i < E; i++){
+            edges[i][0] = sc.nextInt();
+            edges[i][1] = sc.nextInt();
+            edges[i][2] = sc.nextInt();
+        }
+        
+        kruskalMCST(edges, V, E);
+	}
+}
