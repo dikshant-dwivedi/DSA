@@ -1,0 +1,113 @@
+C++ Solution
+
+// { Driver Code Starts
+//Initial template for C++
+
+#include<bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+//User function template for C++
+
+class Solution {
+  public:
+	void shortest_distance(vector<vector<int>>&matrix){
+	    // Code here
+	    int n = matrix.size();
+	    for(int k = 0; k < n; k++){
+	        for(int i = 0; i < n; i++){
+	            for(int j = 0; j < n; j++){
+	                if(i == k || j == k)
+	                    continue;
+	                if(matrix[i][k] == -1 || matrix[k][j] == -1)
+	                    continue;
+	                matrix[i][j] = min(matrix[i][j] == -1 ? INT_MAX : matrix[i][j], matrix[i][k] + matrix[k][j]);
+	            }
+	        }
+	    }
+	}
+};
+
+// { Driver Code Starts.
+int main(){
+	int tc;
+	cin >> tc;
+	while(tc--){
+		int n;
+		cin >> n;
+		vector<vector<int>>matrix(n, vector<int>(n, -1));
+		for(int i = 0; i < n; i++){
+			for(int j = 0; j < n; j++){
+				cin >> matrix[i][j];
+			}
+		}
+		Solution obj;
+		obj.shortest_distance(matrix);
+		for(int i = 0; i < n; i++){
+			for(int j = 0; j < n; j++){
+				cout << matrix[i][j] << " ";
+			}
+			cout << "\n";
+		}
+	}
+	return 0;
+}  // } Driver Code Ends
+
+Java Solution
+
+// { Driver Code Starts
+//Initial template for JAVA
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+class GFG
+{
+    public static void main(String[] args) throws IOException
+    {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine().trim());
+        while(T-->0)
+        {
+            int n = Integer.parseInt(br.readLine().trim());
+            int[][] matrix = new int[n][n];
+            for(int i = 0; i < n; i++){
+                String[] s = br.readLine().trim().split(" ");
+                for(int j = 0; j < n; j++)
+                    matrix[i][j]  =Integer.parseInt(s[j]);
+            }
+            Solution obj = new Solution();
+            obj.shortest_distance(matrix);
+            for(int i = 0; i < n; i++){
+                for(int j  = 0; j < n; j++){
+                    System.out.print(matrix[i][j] + " ");
+                }
+                System.out.println();
+            }
+        }
+    }
+}
+// } Driver Code Ends
+
+
+//User function template for JAVA
+
+class Solution
+{
+    public void shortest_distance(int[][] matrix)
+    {
+        // Code here 
+        int n = matrix.length;
+        for(int k = 0; k < n; k++){
+            for(int i = 0; i < n; i++){
+                for(int j = 0; j < n; j++){
+                    if(i == k || j == k)
+                        continue;
+                    if(matrix[i][k] == -1 || matrix[k][j] == -1)
+                        continue;
+                    matrix[i][j] = Math.min(matrix[i][j] == -1 ? Integer.MAX_VALUE : matrix[i][j], matrix[i][k] + matrix[k][j]);
+                }
+            }
+        }
+    }
+}
