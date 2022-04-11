@@ -1,0 +1,121 @@
+C++ Solution
+
+#include<bits/stdc++.h>
+class Edge{
+    public:
+    int v, prev_v, wt;
+    Edge(int _v, int _prev_v, int _wt){
+        v = _v;
+        prev_v = _prev_v;
+        wt = _wt;
+    }
+};
+
+bool operator<(const Edge &e1, const Edge &e2){
+    return e1.wt > e2.wt;
+}
+
+vector<pair<pair<int, int>, int>> calculatePrimsMST(int n, int m, vector<pair<pair<int, int>, int>> &g)
+{
+    // Write your code here.
+    vector<pair<int, int>> graph[n + 1];
+    for(int i = 0; i < g.size(); i++){
+        graph[g[i].first.first].push_back({g[i].first.second, g[i].second});
+        graph[g[i].first.second].push_back({g[i].first.first, g[i].second});
+    }
+    
+    vector<bool> visited(n + 1, false);
+    priority_queue<Edge> pq;
+    Edge edge(1, -1, 0);
+    //visited[edge.v] = true;
+    pq.push(edge);
+    
+    vector<pair<pair<int, int>, int>> res; 
+    while(!pq.empty()){
+        Edge e = pq.top();
+        pq.pop();
+        
+        if(visited[e.v]) continue;
+        visited[e.v] = true;
+        
+        if(e.prev_v != -1)
+            res.push_back({{e.prev_v, e.v}, e.wt});
+        
+        for(pair<int, int> nbr : graph[e.v]){
+            if(!visited[nbr.first]){
+                Edge neighbor(nbr.first, e.v, nbr.second);
+                //visited[neighbor.v] = true;
+            	pq.push(neighbor);
+            }
+        }
+    }
+    
+    return res;
+}
+
+Java Solution
+
+import java.util.*;
+
+class Edge implements Comparable<Edge>{
+    int v, prev_v, wt;
+    Edge(int _v, int _prev_v, int _wt){
+        v = _v;
+        prev_v = _prev_v;
+        wt = _wt;
+    }
+    public int compareTo(Edge e){
+        return this.wt - e.wt;
+    }
+}
+
+class Pair{
+    int u, wt;
+    Pair(int _u, int _wt){
+        u = _u;
+        wt = _wt;
+    }
+}
+
+public class Solution 
+{
+    public static ArrayList<ArrayList<Integer>> calculatePrimsMST(int n, int m, ArrayList<ArrayList<Integer>> g)
+    {
+        // Write your code here.
+        ArrayList<ArrayList<Pair>> graph = new ArrayList<ArrayList<Pair>>();
+        for(int i = 0; i < n + 1; i++)
+            graph.add(new ArrayList<Pair>());
+        
+        for(int i = 0; i < g.size(); i++){
+            graph.get(g.get(i).get(0)).add(new Pair(g.get(i).get(1), g.get(i).get(2)));
+            graph.get(g.get(i).get(1)).add(new Pair(g.get(i).get(0), g.get(i).get(2)));
+        }
+        
+        PriorityQueue<Edge> pq = new PriorityQueue<Edge>();
+        pq.add(new Edge(1, -1, 0));
+        boolean visited[] = new boolean[n+1];
+        Arrays.fill(visited, false);
+        
+        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+        while(!pq.isEmpty()){
+            Edge e = pq.remove();
+           	if(visited[e.v]) continue;
+            visited[e.v] = true;
+            if(e.prev_v != -1){
+                ArrayList<Integer> resArr = new ArrayList<Integer>();
+                resArr.add(e.prev_v);
+                resArr.add(e.v);
+                resArr.add(e.wt);
+                res.add(new ArrayList<Integer>(resArr));
+            }
+            
+            for(Pair neighbor : graph.get(e.v)){
+                if(!visited[neighbor.u]){
+                    pq.add(new Edge(neighbor.u, e.v, neighbor.wt));
+                }
+            }
+        }
+        
+        return res;
+    }
+}
