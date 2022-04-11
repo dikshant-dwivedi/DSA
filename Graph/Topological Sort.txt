@@ -1,42 +1,93 @@
 C++ Solution
 
-class Solution {
-    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        HashSet<String> wordSet = new HashSet<String>(wordList);
-        if(!wordSet.contains(endWord)) return 0;
-        
-        HashSet<String> visited = new HashSet<String>();
-        Queue<String> q = new LinkedList<String>();
-        
-        q.add(beginWord);
-        visited.add(beginWord);
-        
-        int res = 0, size;
-        String currWord, newWord;
-        char[] newWordArray;
-        while(!q.isEmpty()){
-            size = q.size();
-            res++;
-            while(size-- != 0){
-                currWord = q.poll();
-                if(currWord.equals(endWord)) return res;
-                for(int i = 0; i < currWord.length(); i++){
-                    for(char j = 'a'; j <= 'z'; j++){
-                        newWordArray = currWord.toCharArray();
-                        newWordArray[i] = j;
-                        newWord = new String(newWordArray);
-                        if(wordSet.contains(newWord) && !visited.contains(newWord)){
-                            q.add(newWord);
-                            visited.add(newWord);
-                        }
-                    }
-                }
-            }
+// { Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+class Solution
+{
+	public:
+	
+	void dfs(int vtx, vector<int> &visited, vector<int> adj[], stack<int> &st){
+	    visited[vtx] = 1;
+	    for(auto neighbor: adj[vtx]){
+	        if(!visited[neighbor]){
+	            dfs(neighbor, visited, adj, st);
+	        }
+	    }
+	    st.push(vtx);
+	}
+	
+	//Function to return list containing vertices in Topological order. 
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    // code here
+	    stack<int> st;
+	    vector<int> visited(V, 0);
+	    for(int i = 0; i < V; i++){
+	        if(!visited[i])
+	            dfs(i, visited, adj, st);
+	    }
+	    
+	    vector<int> res;
+	    while(!st.empty()){
+	        res.push_back(st.top());
+	        st.pop();
+	    }
+	    
+	    return res;
+	}
+};
+
+// { Driver Code Starts.
+
+/*  Function to check if elements returned by user
+*   contains the elements in topological sorted form
+*   V: number of vertices
+*   *res: array containing elements in topological sorted form
+*   adj[]: graph input
+*/
+int check(int V, vector <int> &res, vector<int> adj[]) {
+    
+    if(V!=res.size())
+    return 0;
+    
+    vector<int> map(V, -1);
+    for (int i = 0; i < V; i++) {
+        map[res[i]] = i;
+    }
+    for (int i = 0; i < V; i++) {
+        for (int v : adj[i]) {
+            if (map[i] > map[v]) return 0;
+        }
+    }
+    return 1;
+}
+
+int main() {
+    int T;
+    cin >> T;
+    while (T--) {
+        int N, E;
+        cin >> E >> N;
+        int u, v;
+
+        vector<int> adj[N];
+
+        for (int i = 0; i < E; i++) {
+            cin >> u >> v;
+            adj[u].push_back(v);
         }
         
-        return 0;
+        Solution obj;
+        vector <int> res = obj.topoSort(N, adj);
+
+        cout << check(N, res, adj) << endl;
     }
-}
+    
+    return 0;
+}  // } Driver Code Ends
 
 Java Solution
 
