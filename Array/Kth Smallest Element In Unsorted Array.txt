@@ -1,0 +1,200 @@
+C++ Solution
+// { Driver Code Starts
+//Initial function template for C++
+
+#include<bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+//User function template for C++
+
+class Solution{
+    public:
+    // arr : given array
+    // l : starting index of the array i.e 0
+    // r : ending index of the array i.e size-1
+    // k : find kth smallest element and return using this function
+    int kthSmallest(int arr[], int l, int r, int k) {
+        //code here
+        sort(arr, arr + r - l + 1);
+        return arr[l + k - 1];
+    }
+};
+
+// { Driver Code Starts.
+ 
+int main()
+{
+    int test_case;
+    cin>>test_case;
+    while(test_case--)
+    {
+        int number_of_elements;
+        cin>>number_of_elements;
+        int a[number_of_elements];
+        
+        for(int i=0;i<number_of_elements;i++)
+            cin>>a[i];
+            
+        int k;
+        cin>>k;
+        Solution ob;
+        cout<<ob.kthSmallest(a, 0, number_of_elements-1, k)<<endl;
+    }
+    return 0;
+}  // } Driver Code Ends
+
+Java Solution
+
+// { Driver Code Starts
+//Initial Template for Java
+
+/*package whatever //do not write package name here */
+
+import java.io.*;
+import java.util.*;
+class GFG {
+	public static void main (String[] args) {
+		Scanner sc=new Scanner(System.in);
+		PrintWriter out = new PrintWriter(System.out);
+		int t=sc.nextInt();
+		
+		while(t-->0)
+		{
+		    int n=sc.nextInt();
+		    
+		    int arr[]=new int[n];
+		    
+		    for(int i=0;i<n;i++)
+		    arr[i]=sc.nextInt();
+		    
+		    int k=sc.nextInt();
+		    Solution ob = new Solution();
+		    out.println(ob.kthSmallest(arr, 0, n-1, k));
+		}
+		out.flush();
+	}
+}
+// } Driver Code Ends
+
+SOLUTIONS NO ACCEPTED (TLE)
+
+SOL 1
+
+//Initial function template for C++
+
+#include<bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+//User function template for C++
+
+class Solution{
+    public:
+    // arr : given array
+    // l : starting index of the array i.e 0
+    // r : ending index of the array i.e size-1
+    // k : find kth smallest element and return using this function
+    int kthSmallest(int arr[], int l, int r, int k) {
+        //code here
+        for(int m = 1; m <= k; m++){
+            for(int i = l; i <= r - m; i++){
+                if(arr[i+1] > arr[i]){
+                    int temp = arr[i];
+                    arr[i] = arr[i+1];
+                    arr[i+1] = temp;
+                }
+            }   
+        }
+        return arr[r - k + 1];
+    }
+};
+
+// { Driver Code Starts.
+ 
+int main()
+{
+    int test_case;
+    cin>>test_case;
+    while(test_case--)
+    {
+        int number_of_elements;
+        cin>>number_of_elements;
+        int a[number_of_elements];
+        
+        for(int i=0;i<number_of_elements;i++)
+            cin>>a[i];
+            
+        int k;
+        cin>>k;
+        Solution ob;
+        cout<<ob.kthSmallest(a, 0, number_of_elements-1, k)<<endl;
+    }
+    return 0;
+}  // } Driver Code Ends
+
+SOL 2
+
+//Initial function template for C++
+
+#include<bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+//User function template for C++
+
+class Solution{
+    public:
+    // arr : given array
+    // l : starting index of the array i.e 0
+    // r : ending index of the array i.e size-1
+    // k : find kth smallest element and return using this function
+    int kthSmallest(int arr[], int l, int r, int k) {
+        //code here
+        set<int> s;
+        for(int i = l; i <= r; i++){
+            s.insert(arr[i]);
+        }
+        
+        set<int>::iterator itr = s.begin();
+        while(k-- != 1){
+            itr++;
+        }
+        return *itr;
+    }
+};
+
+// { Driver Code Starts.
+ 
+int main()
+{
+    int test_case;
+    cin>>test_case;
+    while(test_case--)
+    {
+        int number_of_elements;
+        cin>>number_of_elements;
+        int a[number_of_elements];
+        
+        for(int i=0;i<number_of_elements;i++)
+            cin>>a[i];
+            
+        int k;
+        cin>>k;
+        Solution ob;
+        cout<<ob.kthSmallest(a, 0, number_of_elements-1, k)<<endl;
+    }
+    return 0;
+}  // } Driver Code Ends
+
+
+//User function Template for Java
+
+class Solution{
+    public static int kthSmallest(int[] arr, int l, int r, int k) 
+    { 
+        //Your code here
+        Arrays.sort(arr);
+        return arr[l + k - 1];
+    } 
+}
