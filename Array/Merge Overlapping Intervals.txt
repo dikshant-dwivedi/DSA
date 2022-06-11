@@ -1,0 +1,139 @@
+C++ Solution
+
+// { Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+class Solution {
+public:
+    vector<vector<int>> overlappedInterval(vector<vector<int>>& intervals) {
+         sort(intervals.begin(), intervals.end());
+         vector<vector<int>> res;
+         res.push_back({intervals[0][0], intervals[0][1]});
+         int j = 0;
+         for(int i = 1; i < intervals.size(); i++){
+             //if low of next intervals is smaller than high of previous interval
+             // then we will merge
+             if(intervals[i][0] <= res[j][1]){
+                 //if the prev interval has bigger high then the next interval
+                 //can be accommodated in it. If the next interval has the bigger
+                 //high, then we need to merge them together, with low of prev
+                 //interval and high of next interval
+                 res[j][1] = max(res[j][1], intervals[i][1]);
+             }
+             else{
+                 res.push_back({intervals[i][0], intervals[i][1]});
+                 j++;
+             }
+         }
+         return res;
+    }
+};
+
+// { Driver Code Starts.
+int main(){
+	int tc;
+	cin >> tc;
+	while(tc--){
+		int n;
+		cin >> n;
+		vector<vector<int>>Intervals(n);
+		for(int i = 0; i < n; i++){
+			int x, y;
+			cin >> x >> y;
+			Intervals[i].push_back(x);
+			Intervals[i].push_back(y);
+		}
+		Solution obj;
+		vector<vector<int>> ans = obj.overlappedInterval(Intervals);
+		for(auto i: ans){
+			for(auto j: i){
+				cout << j << " ";
+			}
+		}
+		cout << "\n";
+	}
+	return 0;
+}  // } Driver Code Ends
+
+Java Solution
+
+// { Driver Code Starts
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+class GFG
+{
+    public static void main(String[] args) throws IOException
+    {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine().trim());
+        while(T-->0)
+        {
+            int n = Integer.parseInt(br.readLine().trim());
+            String[] s = br.readLine().trim().split(" ");
+            int[][] Intervals = new int[n][2];
+            int j = 0;
+            for(int i = 0; i < n; i++){
+                Intervals[i][0] = Integer.parseInt(s[j]);
+                j++;
+                Intervals[i][1] = Integer.parseInt(s[j]);
+                j++;
+            }
+            Solution obj = new Solution();
+            int[][] ans = obj.overlappedInterval(Intervals);
+            for(int i = 0; i < ans.length; i++){
+                for(j = 0; j < ans[i].length; j++){
+                    System.out.print(ans[i][j] + " ");
+                }
+            }
+            System.out.println();
+        }
+    }
+}
+// } Driver Code Ends
+
+
+class ArrayComparator implements Comparator<int[]>{
+    public int compare(int[] a, int[] b){
+        return a[0] - b[0];
+    }
+}
+
+class Solution
+{
+    public int[][] overlappedInterval(int[][] intervals)
+    {
+        // Code here // Code here
+        Arrays.sort(intervals, new ArrayComparator());
+        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+        
+        ArrayList<Integer> item = new ArrayList<Integer>();
+        item.add(intervals[0][0]);
+        item.add(intervals[0][1]);
+        res.add(new ArrayList<Integer>(item));
+        
+        int j = 0;
+        for(int i = 1; i < intervals.length; i++){
+            if(intervals[i][0] <= res.get(j).get(1)){
+                res.get(j).set(1, Math.max(res.get(j).get(1), intervals[i][1]));
+            }
+            else{
+                ArrayList<Integer> interval = new ArrayList<Integer>();
+                interval.add(intervals[i][0]);
+                interval.add(intervals[i][1]);
+                res.add(new ArrayList<Integer>(interval));
+                j++;
+            }
+        }
+        
+        int resArray[][] = new int[res.size()][2];
+        for(int i = 0; i < res.size(); i++){
+            resArray[i][0] = res.get(i).get(0);
+            resArray[i][1] = res.get(i).get(1);
+        }
+        
+        return resArray;
+    }
+}
