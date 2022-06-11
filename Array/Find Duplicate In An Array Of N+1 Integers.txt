@@ -1,0 +1,50 @@
+C++ Solution
+
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        //search space 1 to n
+        int low = 1, high = nums.size()-1, mid;
+        while(low < high){
+            mid = low + (high-low)/2;
+            //check how many numbers in nums are smaller than or equal to mid
+            int count = 0;
+            for(auto i : nums){
+                if(i <= mid){
+                    count++;
+                }
+            }
+            if(count > mid){
+                high =  mid;
+            }
+            else{
+                low = mid + 1;
+            }
+        }
+        return low;
+    }
+};
+
+Java Solution
+
+class Solution {
+    public int findDuplicate(int[] nums) {
+        int low = 1, high = nums.length - 1, mid;
+        while(low < high){
+            mid = low + (high - low)/2;
+            int count = 0;
+            for(Integer i : nums){
+                if(i <= mid){
+                    count++;
+                }
+            }
+            if(count <= mid){
+                low = mid + 1;
+            }
+            else{
+                high = mid;
+            }
+        }
+        return low;
+    }
+}
