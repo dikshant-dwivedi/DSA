@@ -1,0 +1,101 @@
+C++ Solution
+
+// { Driver Code Starts
+// Initial Template for C++
+#include <bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+//User function template for C++
+
+class Solution {
+public:
+    vector<int> factorial(int N){
+        // code here
+        vector<int> res;
+        res.push_back(1);
+        int carry = 0;
+        for(int i = N; i >= 2; i--){
+            for(int j = 0; j < res.size(); j++){
+                int prod = res[j] * i + carry;
+                res[j] = prod % 10;
+                carry = prod / 10;
+            }
+            while(carry != 0){
+                res.push_back(carry % 10);
+                carry = carry / 10;
+            }
+        }
+        reverse(res.begin(), res.end());
+        return res;
+    }
+};
+
+// { Driver Code Starts.
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int N;
+        cin >> N;
+        Solution ob;
+        vector<int> result = ob.factorial(N);
+        for (int i = 0; i < result.size(); ++i){
+            cout<< result[i];
+        }
+        cout << endl;
+    }
+    return 0;
+}  // } Driver Code Ends
+
+Java Solution
+
+// { Driver Code Starts
+//Initial Template for Java
+
+import java.io.*;
+import java.util.*;
+
+class GfG
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        while(t-->0)
+        {
+            int N = sc.nextInt();
+            Solution ob = new Solution();
+            ArrayList<Integer> ans = ob.factorial(N);
+            for (Integer val: ans) 
+                System.out.print(val); 
+            System.out.println();
+        }   
+    }
+}// } Driver Code Ends
+
+
+//User function Template for Java
+
+class Solution {
+    static ArrayList<Integer> factorial(int N){
+        //code here
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        res.add(1);
+        int carry = 0, prod = 0;
+        for(int i = N; i >= 2; i--){
+            for(int j = 0; j < res.size(); j++){
+                prod = res.get(j) * i + carry;
+                res.set(j, prod % 10);
+                carry = prod / 10;
+            }
+            while(carry != 0){
+                res.add(carry % 10);
+                carry = carry / 10;
+            }
+        }
+        Collections.reverse(res);
+        return res;
+    }
+}
