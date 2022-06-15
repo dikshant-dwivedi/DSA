@@ -1,0 +1,167 @@
+C++ Solution
+
+// { Driver Code Starts
+// C++ program to find minimum swaps required
+// to club all elements less than or equals
+// to k together
+#include <bits/stdc++.h>
+using namespace std;
+
+
+
+ // } Driver Code Ends
+
+
+class Solution
+{
+public:
+    int minSwap(int arr[], int n, int k) {
+        // Complet the function
+        int count = 0;
+        for(int i = 0; i < n; i++){
+            if(arr[i] <= k){
+                count++;
+            }
+        }
+
+        if(count == 0){
+            return 0;
+        }
+        
+        int windowSize = count, i = 0, j = 0, bad = 0, minBad = INT_MAX; //bad number = a number > k
+        while(j < n){
+            //condition every time we move forward in the window
+            if(arr[j] > k){
+                bad += 1;
+            }
+            if(j - i + 1 < windowSize){
+                j++;
+            }
+            //condition every time the window size is reached and element
+            //needs to be removed before moving forward
+            else{
+                minBad = min(minBad, bad);
+                if(arr[i] > k){
+                    bad -= 1;
+                }
+                i++;
+                j++;
+            }
+        }
+        
+        return minBad;
+    }
+};
+
+
+// { Driver Code Starts.
+
+// Driver code
+int main() {
+
+	int t,n,k;
+	cin>>t;
+	while(t--)
+    {
+        cin>>n;
+        int arr[n];
+        for(int i=0;i<n;i++)
+            cin>>arr[i];
+        cin>>k;
+        Solution ob;
+        cout << ob.minSwap(arr, n, k) << "\n";
+    }
+	return 0;
+}
+  // } Driver Code Ends
+
+Java Solution
+
+// { Driver Code Starts
+//Initial Template for Java
+
+//Initial Template for Java
+
+
+/*package whatever //do not write package name here */
+
+import java.io.*;
+import java.util.*;
+
+
+class Array {
+    
+    // Driver code
+	public static void main (String[] args) throws IOException{
+		// Taking input using buffered reader
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		int testcases = Integer.parseInt(br.readLine());
+		
+		// looping through all testcases
+		while(testcases-- > 0){
+		    String line = br.readLine();
+		    String[] element = line.trim().split("\\s+");
+		    int sizeOfArray = Integer.parseInt(element[0]);
+		     
+		    int arr [] = new int[sizeOfArray];
+		    
+		    line = br.readLine();
+		    String[] elements = line.trim().split("\\s+");
+		    for(int i = 0;i<sizeOfArray;i++){
+		        arr[i] = Integer.parseInt(elements[i]);
+		    }
+		    int K = Integer.parseInt(br.readLine());
+		    
+		    Complete obj = new Complete();
+		    int ans = obj.minSwap(arr, sizeOfArray, K);
+		    System.out.println(ans);
+		}
+	}
+}
+// } Driver Code Ends
+
+
+//User function Template for Java
+
+
+
+class Complete{
+    
+   
+    // Function for finding maximum and value pair
+    public static int minSwap (int arr[], int n, int k) {
+        //Complete the function
+        int count = 0;
+        for(Integer i : arr){
+            if(i <= k){
+                count++;
+            }
+        }
+        
+        if(count == 0){
+            return 0;
+        }
+        
+        int windowSize = count, i = 0, j = 0, bad = 0, minBad = Integer.MAX_VALUE;
+        while(j < n){
+            if(arr[j] > k){
+                bad += 1;
+            }
+            if(j - i + 1 < windowSize){
+                j++;
+            }
+            else{
+                minBad = Math.min(minBad, bad);
+                if(arr[i] > k){
+                    bad -= 1;
+                }
+                i++;
+                j++;
+            }
+        }
+        return minBad;
+    }
+    
+    
+}
