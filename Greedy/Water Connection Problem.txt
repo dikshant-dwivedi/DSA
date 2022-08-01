@@ -1,0 +1,168 @@
+C++ Solution
+
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+class Solution
+{
+    public:
+    vector<vector<int>> solve(int n, int p, vector<int> a, vector<int> b, vector<int> d)
+    {
+        /**
+        given: list of houses with outgoing pipes 'a' and list of houses with incoming
+        pipes 'b'. together they tell us, that a pipe i goes from house a[i] to house
+        b[i]
+        
+        this representation is pipe centric since, we get the house a[i] and b[i] for
+        pipe i.
+        
+        we will convert this to house centric representation. that is, we will have list
+        of pipes that are incoming to some house 'in' and a list of pipes that are 
+        outgoing to some house 'out' together, they tell us, that a house i has an 
+        incoming pipe in[i] and outgoing pipe b[i]
+        
+        this representation is house centric since we get the incoming pipe in[i] and 
+        outgoing pipe out[i] for house i
+        */
+        
+        vector<int> in(n+1, -1), out(n+1, -1);
+        int houseWithIncomingPipe, houseWithOutgoingPipe;
+        for(int pipe = 0; pipe < p; pipe++){
+            houseWithIncomingPipe = b[pipe];
+            houseWithOutgoingPipe = a[pipe];
+            in[houseWithIncomingPipe] = out[houseWithOutgoingPipe] = pipe;
+        }
+        
+        /**
+        now find a house with only outgoing pipe(where tank will be installed) and 
+        using reach to a house with only incoming pipe(where tap will be installed).
+        that will be counted as one network. while doing that, also keep a track of 
+        minimum diameter
+        */
+        
+        //because houses no. are from 1 to n
+        int pipe, house, diameter;
+        vector<vector<int>> res;
+        for(int h = 1; h <= n; h++){
+            if(out[h] != -1 && in[h] == -1){
+                house = h;
+                pipe = out[h];
+                diameter = INT_MAX;
+                while(out[house] != -1){
+                    //which pipe is this
+                    pipe = out[house];   
+                    //which house is this pipe going to.
+                    //in other words, which house is this pipe
+                    //incoming
+                    house = b[pipe];
+                    diameter = min(diameter, d[pipe]);
+                }
+                res.push_back({h, house, diameter});
+            }
+        }   
+        
+        return res;
+    }
+};
+
+
+//{ Driver Code Starts.
+int main()
+{
+	int t,n,p;
+	cin>>t;
+	while(t--)
+    {
+        cin>>n>>p;
+        vector<int> a(p),b(p),d(p);
+        for(int i=0;i<p;i++){
+            cin>>a[i]>>b[i]>>d[i];
+        }
+        Solution obj;
+        vector<vector<int>> answer = obj.solve(n,p,a,b,d);
+        cout<<answer.size()<<endl;
+        for(auto i:answer)
+        {
+            cout<<i[0]<<" "<<i[1]<<" "<<i[2]<<endl;
+        }
+        
+    }
+	return 0;
+}
+// } Driver Code Ends
+
+Java Solution
+
+//{ Driver Code Starts
+//Initial Template for Java
+import java.io.*;
+import java.util.*; 
+class GFG{
+    public static void main(String args[]) throws IOException { 
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        
+        while(t-- > 0){
+            int n = sc.nextInt();
+            int p = sc.nextInt();
+            ArrayList<Integer> a = new ArrayList<Integer>();
+            ArrayList<Integer> b = new ArrayList<Integer>();
+            ArrayList<Integer> d = new ArrayList<Integer>();
+            
+            for(int i=0;i<p;i++)
+            {
+                a.add(sc.nextInt());
+                b.add(sc.nextInt());
+                d.add(sc.nextInt());
+            }
+            
+            Solution ob = new Solution();
+            ArrayList<ArrayList<Integer>> ans = ob.solve(n, p, a, b, d); 
+            System.out.println(ans.size());
+            for (int i=0;i<ans.size();i++){ 
+                System.out.println(ans.get(i).get(0)+" "+ans.get(i).get(1)+" "+ans.get(i).get(2)); 
+            }
+        }
+    } 
+} 
+// } Driver Code Ends
+
+
+//User function Template for Java
+class Solution 
+{ 
+    ArrayList<ArrayList<Integer>> solve(int n, int p, ArrayList<Integer> a ,ArrayList<Integer> b ,ArrayList<Integer> d) 
+    { 
+         // code here
+         int in[] = new int[n+1];
+         int out[] = new int[n+1];
+         Arrays.fill(in, -1);
+         Arrays.fill(out, -1);
+         for(int i = 0; i < p; i++){
+             out[a.get(i)] = in[b.get(i)] = i;
+         }
+         
+         ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+         int house, pipe, diameter;    
+         for(int h = 1; h <= n; h++){
+            if(out[h] != -1 && in[h] == -1){
+                house = h;
+                diameter = Integer.MAX_VALUE;
+                while(out[house] != -1){
+                    pipe = out[house];
+                    house = b.get(pipe);
+                    diameter = Math.min(diameter, d.get(pipe));
+                }   
+                ArrayList<Integer> pairWithDiameter = new ArrayList<Integer>();
+                pairWithDiameter.add(h);
+                pairWithDiameter.add(house);
+                pairWithDiameter.add(diameter);
+                res.add(pairWithDiameter);
+            }
+         }
+         
+         return res;
+     }
+} 
