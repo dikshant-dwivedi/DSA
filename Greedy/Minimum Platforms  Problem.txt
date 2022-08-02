@@ -1,0 +1,142 @@
+C++ Solution
+
+//{ Driver Code Starts
+// Program to find minimum number of platforms
+// required on a railway station
+#include <bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+class Solution{
+    public:
+    //Function to find the minimum number of platforms required at the
+    //railway station such that no train waits.
+    int findPlatform(int arr[], int dep[], int n)
+    {
+    	/**
+    	We are only concerned with the arrival and departure time and it doesnt matter
+    	to us which train has arrived or departed. We only care to know if at a moment,
+    	the platform is vacant or not. So, for that we can sort our arrival and 
+    	departure times separately
+    	*/
+    	sort(arr, arr + n);
+    	sort(dep, dep + n);
+    	
+    	int max_platform = 1, platform = 1;
+    	int i = 1, j = 0;
+    	while(i < n){
+    	    if(arr[i] <= dep[j]){
+    	        platform++;
+    	        i++;
+    	    }
+    	    else{
+    	        platform--;
+    	        j++;
+    	    }
+    	    max_platform = max(max_platform, platform);
+    	}
+    	
+    	return max_platform;
+    }
+};
+
+
+//{ Driver Code Starts.
+// Driver code
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--) 
+    {
+        int n;
+        cin>>n;
+        int arr[n];
+        int dep[n];
+        for(int i=0;i<n;i++)
+            cin>>arr[i];
+        for(int j=0;j<n;j++){
+            cin>>dep[j];
+        }
+        Solution ob;
+        cout <<ob.findPlatform(arr, dep, n)<<endl;
+    } 
+   return 0;
+}
+// } Driver Code Ends
+
+Java Solution
+
+//{ Driver Code Starts
+//Initial Template for Java
+
+import java.util.*;
+import java.io.*;
+import java.lang.*;
+
+class GFG
+{
+    public static void main(String args[])throws IOException
+    {
+        BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(read.readLine());
+        
+        while(t-- > 0)
+        {
+            String str[] = read.readLine().trim().split(" ");
+            int n = Integer.parseInt(str[0]);
+            
+            int arr[] = new int[n];
+            int dep[] = new int[n];
+            
+            str = read.readLine().trim().split(" ");
+            for(int i = 0; i < n; i++)
+              arr[i] = Integer.parseInt(str[i]);
+            str = read.readLine().trim().split(" ");
+            for(int i = 0; i < n; i++)
+                dep[i] = Integer.parseInt(str[i]);
+                
+            System.out.println(new Solution().findPlatform(arr, dep, n));
+        }
+    }
+    
+    
+}
+
+
+
+// } Driver Code Ends
+
+
+//User function Template for Java
+
+class Solution
+{
+    //Function to find the minimum number of platforms required at the
+    //railway station such that no train waits.
+    static int findPlatform(int arr[], int dep[], int n)
+    {
+        // add your code here
+        Arrays.sort(arr);
+        Arrays.sort(dep);
+        
+        int platform = 1, maxPlatform = 1;
+        int i = 1, j = 0;
+        while(i < n){
+            if(arr[i] <= dep[j]){
+                platform++;
+                i++;
+            }
+            else{
+                platform--;
+                j++;
+            }
+            maxPlatform = Math.max(platform, maxPlatform);
+        }
+        
+        return maxPlatform;
+    }
+    
+}
+
