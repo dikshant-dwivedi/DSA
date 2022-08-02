@@ -1,0 +1,146 @@
+C++ Solution
+
+//{ Driver Code Starts
+/* Driver program to test above function */
+
+#include<bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+class Solution {
+public:
+    int buyMaximumProducts(int n, int k, int price[]){
+        //Write your code here
+        vector<pair<int, int>> stockPrice;
+        for(int i = 0; i < n; i++){
+            stockPrice.push_back({price[i], i});
+        }
+        
+        sort(stockPrice.begin(), stockPrice.end());
+        
+        int res = 0;
+        for(int i = 0; i < n; i++){
+            if(stockPrice[i].first > k){
+                break;
+            }
+            int j = 0;
+            while(j <= stockPrice[i].second){
+                if(stockPrice[i].first <= k){
+                    k -= stockPrice[i].first;
+                    res++;
+                    j++;
+                }
+                else{
+                    break;
+                }
+            }
+        }
+        
+        return res;
+    }
+};
+
+
+//{ Driver Code Starts.
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+	    int n, k;
+	    cin >> n >> k;
+	    int price[n];
+	    for(int i = 0 ; i < n; i++){
+	        cin >> price[i];
+	    }
+	    Solution ob;
+	    int ans = ob.buyMaximumProducts(n, k, price);
+	    cout << ans<<endl;
+	}
+	return 0;
+}
+
+// } Driver Code Ends
+
+Java Solution
+
+//{ Driver Code Starts
+import java.io.*;
+import java.util.*;
+
+class GFG {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int t;
+        t = Integer.parseInt(br.readLine());
+        while(t-- > 0){
+            String str=br.readLine();
+    		String[] starr=str.split(" ");
+    		
+    		//input n and d
+    	    int n=Integer.parseInt(starr[0]);
+    		int k= Integer.parseInt(starr[1]);
+            
+            starr = br.readLine().trim().split(" ");
+            int[] price = new int[n];
+            for(int i = 0; i < n; i++)
+                price[i] = Integer.parseInt(starr[i]);
+            
+            Solution obj = new Solution();
+            int res = obj.buyMaximumProducts(n, k, price);
+            
+            System.out.println(res);
+            
+        }
+    }
+}
+
+// } Driver Code Ends
+
+class Pair {
+    int price, index;
+    Pair(int p, int i){
+        price = p;
+        index = i;
+    }
+}
+
+class PairComparator implements Comparator<Pair>{
+    public int compare(Pair p1, Pair p2){
+        return p1.price - p2.price;
+    }
+}
+
+class Solution {
+    public static int buyMaximumProducts(int n, int k, int[] price) {
+        // code 
+        Pair stockPrice[] = new Pair[n];
+        for(int i = 0; i < n; i++){
+            stockPrice[i] = new Pair(price[i], i);
+        }
+        
+        Arrays.sort(stockPrice, new PairComparator());
+        
+        int res = 0;
+        for(int i = 0; i < n; i++){
+            if(stockPrice[i].price > k){
+                break;
+            }
+            int j = 0;
+            while(j <= stockPrice[i].index){
+                if(stockPrice[i].price <= k){
+                    k -= stockPrice[i].price;
+                    j++;
+                    res++;
+                }
+                else{
+                    break;
+                }
+            }
+        }
+        
+        return res;
+    }
+}
+        
