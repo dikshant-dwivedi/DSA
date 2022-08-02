@@ -1,0 +1,154 @@
+https://youtu.be/VmdrRKKvg4s
+PS: VIDEO'S CODE IMPLEMENTATION IS NOT CORRECT. REFER BELOW 
+
+C++ Solution
+
+//{ Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+class Solution{
+public:
+    string chooseandswap(string s){
+        // Code Here
+        unordered_map<char, int> mp;
+        for(int i = 0; i < s.length(); i++){
+            if(mp.find(s[i]) == mp.end()){
+                mp[s[i]] = i;    
+            }
+        }
+        
+        char a = '$', b = '$';
+        for(int i = 0; i < s.length(); i++){
+            char cmp = 'a';
+            /*if cmp ranks lexigographically higher than s[i]
+            then check if it exists in the string in a position
+            greater than i. if it does, we can 
+            swap. otherwise, update cmp to cmp++ */
+            while(cmp < s[i] && cmp <= 'z'){
+                if(mp.find(cmp) != mp.end() && mp[cmp] > i){
+                    a = s[i];
+                    b = cmp;
+                    break;
+                }
+                cmp++;
+            }
+            if(a != '$'){
+                break;
+            }
+        }
+        
+        if(a != '$'){
+            for(int i = 0; i < s.length(); i++){
+                if(s[i] == a)
+                    s[i] = b;
+                else if(s[i] == b)
+                    s[i] = a;
+            }
+        }
+        
+        return s;
+    }
+    
+};
+
+
+//{ Driver Code Starts.
+
+int main()
+{
+    Solution obj;
+	int t;
+	cin >> t;
+	while(t--)
+	{	
+	    string a;
+		cin >> a;
+		cout << obj.chooseandswap(a) << endl;
+	}
+	return 0;
+}
+
+// } Driver Code Ends
+
+Java Solution
+
+//{ Driver Code Starts
+//Initial Template for Java
+
+//Initial Template for Java
+
+import java.io.*;
+import java.util.*;
+
+class GFG
+{
+    public static void main(String args[])throws IOException
+    {
+        
+        Solution obj = new Solution();
+        BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(read.readLine());
+        while(t-- > 0)
+        {
+            String A = read.readLine().trim();
+            
+            String ans = obj.chooseandswap(A);
+            System.out.println(ans);
+        }
+    }
+}
+
+
+// } Driver Code Ends
+
+
+//User function Template for Java
+
+
+
+class Solution{
+    
+    
+    String chooseandswap(String s){
+        // Code Here
+        HashMap<Character, Integer> mp = new HashMap<Character, Integer>();
+        for(int i = 0; i < s.length(); i++){
+            if(!mp.containsKey(s.charAt(i))){
+                mp.put(s.charAt(i), i);
+            }
+        }
+        
+        char a = '$', b = '$';
+        for(int i = 0; i < s.length(); i++){
+            char cmp = 'a';
+            while(cmp <= 'z' && cmp < s.charAt(i)){
+                if(mp.containsKey(cmp) && mp.get(cmp) > i){
+                    a = s.charAt(i);
+                    b = cmp;
+                    break;
+                }
+                cmp++;
+            }
+            if(a != '$'){
+                break;
+            }
+        }
+        
+        if(a != '$'){
+            char sArray[] = s.toCharArray();
+            for(int i = 0; i < s.length(); i++){
+                if(sArray[i] == a)
+                    sArray[i] = b;
+                else if(sArray[i] == b)
+                    sArray[i] = a;
+            }
+            s = new String(sArray);
+        }
+        
+        return s;
+    }
+    
+}
